@@ -10,13 +10,13 @@ public sealed class AppDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            .LogTo(Console.WriteLine, LogLevel.Information)
+            //.UseNpgsql("Host=localhost;Port=5433;Database=postgres;Username=postgres;Password=123456;");
             .UseSqlite("DataSource=/Users/vadislavzainullin/RiderProjects/EFCore.TemporaryTables/Sample/app.db")
             .UseTemporaryTables(o =>
             {
                 o.Assemblies.Add(Assembly.GetExecutingAssembly());
-            });
-            //.UseNpgsql("Host=localhost;Port=5433;Database=postgres;Username=postgres;Password=123456;");
+            })
+            .LogTo(Console.WriteLine, LogLevel.Information);
 
         base.OnConfiguring(optionsBuilder);
     }
