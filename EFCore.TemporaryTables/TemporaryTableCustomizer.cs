@@ -19,8 +19,13 @@ internal sealed class TemporaryTableCustomizer : IModelCustomizer
     {
         _modelCustomizer.Customize(modelBuilder, context);
 
+        ConfigureTemporaryTables(modelBuilder);
+    }
+
+    private void ConfigureTemporaryTables(ModelBuilder modelBuilder)
+    {
         var assemblies = _options.Assemblies;
-        
+
         foreach (var assembly in assemblies)
         foreach (var type in assembly.GetTypes())
         {
