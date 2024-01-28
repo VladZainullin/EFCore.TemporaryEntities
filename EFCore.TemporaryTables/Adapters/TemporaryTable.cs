@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace EFCore.TemporaryTables.TemporaryTableAdapters;
+namespace EFCore.TemporaryTables.Adapters;
 
 public abstract class TemporaryTable<TEntity> :
     DbSet<TEntity>,

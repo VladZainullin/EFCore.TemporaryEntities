@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace EFCore.TemporaryTables.TemporaryTableAdapters;
+namespace EFCore.TemporaryTables.Adapters;
 
 internal sealed class NpgsqlTemporaryTable<TEntity> : TemporaryTable<TEntity> where TEntity : class
 {

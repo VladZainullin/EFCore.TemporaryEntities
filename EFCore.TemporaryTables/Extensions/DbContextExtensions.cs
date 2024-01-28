@@ -1,4 +1,4 @@
-using EFCore.TemporaryTables.TemporaryTableAdapters;
+using EFCore.TemporaryTables.Adapters;
 using Microsoft.EntityFrameworkCore;
 
 namespace EFCore.TemporaryTables.Extensions;
