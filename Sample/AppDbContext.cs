@@ -1,3 +1,4 @@
+using System.Reflection;
 using EFCore.TemporaryTables.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,10 @@ public sealed class AppDbContext : DbContext
         optionsBuilder
             .LogTo(Console.WriteLine, LogLevel.Information)
             .UseSqlite("DataSource=/Users/vadislavzainullin/RiderProjects/EFCore.TemporaryTables/Sample/app.db")
-            .UseTemporaryTables();
+            .UseTemporaryTables(o =>
+            {
+                o.Assemblies.Add(Assembly.GetExecutingAssembly());
+            });
             //.UseNpgsql("Host=localhost;Port=5433;Database=postgres;Username=postgres;Password=123456;");
 
         base.OnConfiguring(optionsBuilder);

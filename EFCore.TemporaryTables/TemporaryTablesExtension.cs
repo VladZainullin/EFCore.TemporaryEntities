@@ -5,8 +5,24 @@ namespace EFCore.TemporaryTables;
 
 internal sealed class TemporaryTablesExtension : IDbContextOptionsExtension
 {
+    private readonly Action<TemporaryTableOptions> _configureOptions;
+
+    public TemporaryTablesExtension(Action<TemporaryTableOptions> configureOptions)
+    {
+        _configureOptions = configureOptions;
+    }
+
     public void ApplyServices(IServiceCollection services)
     {
+        services.AddScoped(_ =>
+        {
+            var options = new TemporaryTableOptions();
+
+            _configureOptions(options);
+
+            return options;
+        });
+        
         services.Decorate<IModelCustomizer, TemporaryTableCustomizer>();
     }
 
