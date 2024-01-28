@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EFCore.TemporaryTables;
 
-public static class ModelBuilderExtensions
+public static class EntityTypeBuilderExtensions
 {
     public static EntityTypeBuilder<T> ToTemporaryTable<T>(this EntityTypeBuilder<T> builder)
         where T : class
