@@ -14,7 +14,7 @@ internal sealed class TemporaryTablesExtension : IDbContextOptionsExtension
 
     public void ApplyServices(IServiceCollection services)
     {
-        services.AddScoped(_ =>
+        services.AddSingleton(_ =>
         {
             var options = new TemporaryTableOptions();
 
@@ -24,6 +24,7 @@ internal sealed class TemporaryTablesExtension : IDbContextOptionsExtension
         });
         
         services.Decorate<IModelCustomizer, TemporaryTableCustomizer>();
+        services.Decorate<IModelCacheKeyFactory, ModelCacheKeyFactoryDecorator>();
     }
 
     public void Validate(IDbContextOptions options)
