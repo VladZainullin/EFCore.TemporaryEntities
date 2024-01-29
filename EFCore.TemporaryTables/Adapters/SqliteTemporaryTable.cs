@@ -37,6 +37,39 @@ internal sealed class SqliteTemporaryTable<TEntity> : TemporaryTable<TEntity> wh
 
         builder.Remove(builder.Length - 2, 2).Append(");");
 
+        foreach (var index in entityType.GetIndexes())
+        {
+            builder
+                .AppendLine()
+                .Append("create");
+
+            if (index.IsUnique) builder.Append(" unique");
+
+            builder
+                .Append(" index ")
+                .Append(index.GetDatabaseName());
+
+            builder
+                .Append(" on \"")
+                .Append(entityType.GetTableName());
+
+            builder.Append("\" (");
+
+            for (var i = 0; i < index.Properties.Count; i++)
+            {
+                builder.Append('"').Append(index.Properties[i].GetColumnName()).Append('"');
+
+                if (!ReferenceEquals(index.IsDescending, default)
+                    && index.IsDescending.Count != default
+                    && index.IsDescending[i])
+                    builder.Append(" desc");
+
+                if (i != index.Properties.Count - 1) builder.Append(", ");
+            }
+
+            builder.Append(");");
+        }
+
         var sql = builder.ToString();
 
         await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);

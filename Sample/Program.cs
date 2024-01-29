@@ -14,7 +14,8 @@ public static class Program
 
         try
         {
-            var table = context.TemporaryTable<Projection>();
+            var table = context.TemporaryTable<Projection>(
+                c => c.HasIndex(nameof(Projection.FullName)));
 
             await table.CreateAsync(cancellationToken);
 

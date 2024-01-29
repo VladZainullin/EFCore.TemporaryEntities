@@ -8,11 +8,16 @@ internal sealed class ModelCustomizerDecorator : IModelCustomizer
 {
     private readonly IModelCustomizer _modelCustomizer;
     private readonly TemporaryTableOptions _options;
+    private readonly TemporaryTablesConfiguration _temporaryTablesConfiguration;
 
-    public ModelCustomizerDecorator(IModelCustomizer modelCustomizer, TemporaryTableOptions options)
+    public ModelCustomizerDecorator(
+        IModelCustomizer modelCustomizer,
+        TemporaryTableOptions options,
+        TemporaryTablesConfiguration temporaryTablesConfiguration)
     {
         _modelCustomizer = modelCustomizer;
         _options = options;
+        _temporaryTablesConfiguration = temporaryTablesConfiguration;
     }
 
     public void Customize(ModelBuilder modelBuilder, DbContext context)
@@ -30,10 +35,10 @@ internal sealed class ModelCustomizerDecorator : IModelCustomizer
         foreach (var type in assembly.GetTypes())
         {
             if (!Attribute.IsDefined(type, typeof(TemporaryTableAttribute))) continue;
-            
-            var entityTypeBuilder = modelBuilder.Entity(type);
 
-            entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);
+            var configure = _temporaryTablesConfiguration.GetOrAdd(type);
+
+            configure(modelBuilder.Entity(type));
         }
     }
 }
