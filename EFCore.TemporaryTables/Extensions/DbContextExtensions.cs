@@ -11,7 +11,9 @@ public static class DbContextExtensions
         {
             "Npgsql.EntityFrameworkCore.PostgreSQL" => new NpgsqlTemporaryTable<TEntity>(context),
             "Microsoft.EntityFrameworkCore.Sqlite" => new SqliteTemporaryTable<TEntity>(context),
-            _ => throw new ArgumentOutOfRangeException("Your database provider not support")
+            _ => throw new ArgumentOutOfRangeException(
+                nameof(context.Database.ProviderName),
+                "Your database provider not support")
         };
     }
 }
