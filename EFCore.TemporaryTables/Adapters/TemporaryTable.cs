@@ -1,7 +1,6 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Linq.Expressions;
-using EFCore.TemporaryTables.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -14,10 +13,7 @@ public abstract class TemporaryTable<TEntity> :
     IEnumerable<TEntity>,
     IQueryable,
     IInfrastructure<IServiceProvider>,
-    IListSource,
-    ICreatable,
-    IDropable,
-    IExistable where TEntity : class
+    IListSource where TEntity : class
 {
     protected readonly DbContext Context;
 

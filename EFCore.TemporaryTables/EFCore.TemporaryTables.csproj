@@ -8,11 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.15"/>
-        <PackageReference Include="Scrutor" Version="4.2.2" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\EFCore.TemporaryTables.Abstractions\EFCore.TemporaryTables.Abstractions.csproj" />
+        <PackageReference Include="Scrutor" Version="4.2.2"/>
     </ItemGroup>
 
 </Project>
