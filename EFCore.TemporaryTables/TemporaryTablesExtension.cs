@@ -1,3 +1,4 @@
+using EFCore.TemporaryTables.Decorators;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,7 +24,7 @@ internal sealed class TemporaryTablesExtension : IDbContextOptionsExtension
             return options;
         });
         
-        services.Decorate<IModelCustomizer, TemporaryTableCustomizer>();
+        services.Decorate<IModelCustomizer, ModelCustomizerDecorator>();
         services.Decorate<IModelCacheKeyFactory, ModelCacheKeyFactoryDecorator>();
     }
 

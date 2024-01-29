@@ -2,14 +2,14 @@ using EFCore.TemporaryTables.Attributes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace EFCore.TemporaryTables;
+namespace EFCore.TemporaryTables.Decorators;
 
-internal sealed class TemporaryTableCustomizer : IModelCustomizer
+internal sealed class ModelCustomizerDecorator : IModelCustomizer
 {
     private readonly IModelCustomizer _modelCustomizer;
     private readonly TemporaryTableOptions _options;
 
-    public TemporaryTableCustomizer(IModelCustomizer modelCustomizer, TemporaryTableOptions options)
+    public ModelCustomizerDecorator(IModelCustomizer modelCustomizer, TemporaryTableOptions options)
     {
         _modelCustomizer = modelCustomizer;
         _options = options;

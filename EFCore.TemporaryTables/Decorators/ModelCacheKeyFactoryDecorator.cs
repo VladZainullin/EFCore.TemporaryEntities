@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace EFCore.TemporaryTables;
+namespace EFCore.TemporaryTables.Decorators;
 
 internal sealed class ModelCacheKeyFactoryDecorator : IModelCacheKeyFactory
 {
