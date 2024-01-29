@@ -4,5 +4,10 @@ namespace EFCore.TemporaryTables;
 
 public sealed class TemporaryTableOptions
 {
-    public ICollection<Assembly> Assemblies { get; init; } = new List<Assembly>(6);
+    internal TemporaryTableOptions()
+    {
+        
+    }
+    
+    public ICollection<Assembly> Assemblies { get; } = new List<Assembly>(6);
 }
