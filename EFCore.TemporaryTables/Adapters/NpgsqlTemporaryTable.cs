@@ -1,5 +1,7 @@
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace EFCore.TemporaryTables.Adapters;
 
@@ -13,7 +15,11 @@ internal sealed class NpgsqlTemporaryTable<TEntity> : TemporaryTable<TEntity> wh
     {
         var builder = new StringBuilder();
 
-        var entityType = Context.Model.FindEntityType(typeof(TEntity));
+        var designTimeModel = Context.GetService<IDesignTimeModel>();
+        
+        var model = designTimeModel.Model;
+        
+        var entityType = model.FindEntityType(typeof(TEntity));
 
         builder
             .Append("create temporary table \"")

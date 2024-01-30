@@ -3,10 +3,8 @@ using EFCore.TemporaryTables.Attributes;
 
 namespace Sample;
 
-[TemporaryTable(nameof(People))]
 public sealed class People
 {
-    [Key]
     public required int Id { get; init; }
     
     public required string Name { get; init; }
