@@ -17,11 +17,4 @@ public sealed class AppDbContext : DbContext
 
         base.OnConfiguring(optionsBuilder);
     }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<People>();
-
-        base.OnModelCreating(modelBuilder);
-    }
 }
