@@ -1,5 +1,8 @@
+using EFCore.TemporaryTables.Attributes;
+
 namespace Sample;
 
+[TemporaryTable]
 public sealed class People
 {
     public required int Id { get; init; }

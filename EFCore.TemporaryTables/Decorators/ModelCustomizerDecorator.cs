@@ -33,7 +33,9 @@ internal sealed class ModelCustomizerDecorator : IModelCustomizer
         {
             if (!Attribute.IsDefined(type, typeof(TemporaryTableAttribute))) continue;
 
-            modelBuilder.Entity(type);
+            var entityTypeBuilder = modelBuilder.Entity(type);
+            
+            entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);
         }
     }
 }
