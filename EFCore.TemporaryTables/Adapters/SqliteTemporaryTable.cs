@@ -1,7 +1,5 @@
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace EFCore.TemporaryTables.Adapters;
 
@@ -15,7 +13,9 @@ internal sealed class SqliteTemporaryTable<TEntity> : TemporaryTable<TEntity> wh
     {
         var builder = new StringBuilder();
 
-        var entityType = Context.GetService<IDesignTimeModel>().Model.FindEntityType(typeof(TEntity));
+        var model = Context.Model;
+
+        var entityType = model.FindEntityType(typeof(TEntity));
 
         builder
             .Append("create temporary table \"")

@@ -10,9 +10,9 @@ public static class DbContextOptionsBuilderExtensions
         Action<TemporaryTableOptions> options)
     {
         var extension = builder.Options.FindExtension<TemporaryTablesExtension>();
-        
+
         if (!ReferenceEquals(extension, default)) return builder;
-        
+
         var dbContextOptionsBuilderInfrastructure = builder as IDbContextOptionsBuilderInfrastructure;
         dbContextOptionsBuilderInfrastructure.AddOrUpdateExtension(new TemporaryTablesExtension(options));
 

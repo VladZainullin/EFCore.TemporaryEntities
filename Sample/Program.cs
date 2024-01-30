@@ -14,15 +14,9 @@ public static class Program
 
         try
         {
-            var table = context.TemporaryTable<Projection>(
-                c => { c.HasIndex(nameof(Projection.FullName)); });
-
-            await table.CreateAsync(cancellationToken);
-
-            var exists = await table.ExistsAsync(cancellationToken);
-
-            await table.DropAsync(cancellationToken);
-
+            var fullNameProjections = context.TemporaryTable<FullNameProjection>();
+            await fullNameProjections.CreateAsync(cancellationToken);
+            await fullNameProjections.DropAsync(cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
 
             await context.Database.CommitTransactionAsync(cancellationToken);

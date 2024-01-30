@@ -24,10 +24,7 @@ internal sealed class TemporaryTablesExtension : IDbContextOptionsExtension
             return options;
         });
 
-        services.AddSingleton<TemporaryTablesConfiguration>();
-
         services.Decorate<IModelCustomizer, ModelCustomizerDecorator>();
-        services.Decorate<IModelCacheKeyFactory, ModelCacheKeyFactoryDecorator>();
     }
 
     public void Validate(IDbContextOptions options)
