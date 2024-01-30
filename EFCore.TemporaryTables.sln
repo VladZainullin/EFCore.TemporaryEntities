@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.TemporaryTables", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{2B1767DC-AE5F-4D67-AA6D-6B30B820DB8A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{323B3849-F42E-40B2-95BC-063D0379DDF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,8 @@ Global
 		{2B1767DC-AE5F-4D67-AA6D-6B30B820DB8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B1767DC-AE5F-4D67-AA6D-6B30B820DB8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B1767DC-AE5F-4D67-AA6D-6B30B820DB8A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E6D9593E-FA7D-45AE-AA2E-07D336EFB344} = {323B3849-F42E-40B2-95BC-063D0379DDF3}
 	EndGlobalSection
 EndGlobal
