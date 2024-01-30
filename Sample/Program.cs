@@ -14,7 +14,7 @@ public static class Program
 
         try
         {
-            var fullNameProjections = context.TemporaryTable<FullNameProjection>();
+            var fullNameProjections = context.TemporaryTable<People>();
             await fullNameProjections.CreateAsync(cancellationToken);
             await fullNameProjections.DropAsync(cancellationToken);
             await context.SaveChangesAsync(cancellationToken);

@@ -8,5 +8,11 @@ public sealed class People
 
     public required string Surname { get; init; }
 
-    public required int Age { get; init; }
+    public required DateTime DateOfBirth { get; init; }
+
+    public required Gender Gender { get; init; }
+
+    public required bool HasChildren { get; init; }
+
+    public required decimal Salary { get; set; }
 }
