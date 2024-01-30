@@ -3,7 +3,7 @@ using EFCore.TemporaryTables.Attributes;
 namespace Sample;
 
 [TemporaryTable]
-public sealed class Projection
+public sealed class FullNameProjection
 {
     public required int Id { get; set; }
 
