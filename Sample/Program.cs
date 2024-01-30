@@ -14,9 +14,9 @@ public static class Program
 
         try
         {
-            var fullNameProjections = context.TemporaryTable<People>();
-            await fullNameProjections.CreateAsync(cancellationToken);
-            await fullNameProjections.DropAsync(cancellationToken);
+            var peoples = context.TemporaryTable<People>();
+            await peoples.CreateAsync(cancellationToken);
+            await peoples.DropAsync(cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
 
             await context.Database.CommitTransactionAsync(cancellationToken);

@@ -1,15 +1,16 @@
+using System.Reflection;
 using EFCore.TemporaryTables.Attributes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace EFCore.TemporaryTables.Decorators;
 
-internal sealed class ModelCustomizerDecorator : IModelCustomizer
+internal sealed class ConfigureTemporaryTablesModelCustomizerDecorator : IModelCustomizer
 {
     private readonly IModelCustomizer _modelCustomizer;
     private readonly TemporaryTableOptions _options;
 
-    public ModelCustomizerDecorator(
+    public ConfigureTemporaryTablesModelCustomizerDecorator(
         IModelCustomizer modelCustomizer,
         TemporaryTableOptions options)
     {
@@ -33,7 +34,14 @@ internal sealed class ModelCustomizerDecorator : IModelCustomizer
         {
             if (!Attribute.IsDefined(type, typeof(TemporaryTableAttribute))) continue;
 
+            var attribute = type.GetCustomAttribute<TemporaryTableAttribute>();
+            
             var entityTypeBuilder = modelBuilder.Entity(type);
+
+            if (attribute is { Name: not null })
+            {
+                entityTypeBuilder.ToTable(attribute.Name);
+            }
             
             entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);
         }
