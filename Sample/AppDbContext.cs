@@ -22,22 +22,29 @@ public sealed class AppDbContext : DbContext
     {
         modelBuilder.Entity<People>(entityTypeBuilder =>
         {
-            entityTypeBuilder
-                .HasIndex(p => p.Gender, "gender_index")
-                .IsUnique();
-            
-            entityTypeBuilder
-                .HasIndex(p => p.HasChildren, "has_children_index")
-                .IsDescending();
-
-            entityTypeBuilder
-                .Property(p => p.Name)
-                .HasMaxLength(20)
-                .IsRequired();
-
             entityTypeBuilder.HasKey(p => p.Id);
+
+            entityTypeBuilder
+                .OwnsOne(
+                    p => p.Identification,
+                    ownedNavigationBuilder =>
+                    {
+                        ownedNavigationBuilder
+                            .HasIndex(i => i.Gender)
+                            .IsDescending();
+
+                        ownedNavigationBuilder
+                            .HasIndex(i => i.DateOfBirth)
+                            .IsUnique();
+                    })
+                .OwnsOne(
+                    p => p.Family,
+                    ownedNavigationBuilder => { ownedNavigationBuilder.HasIndex(f => f.HasPartner); })
+                .OwnsOne(p => p.Work, ownedNavigationBuilder => { ownedNavigationBuilder.OwnsOne(w => w.Address); });
+
+            entityTypeBuilder.OwnsOne(p => p.Address);
         });
-        
+
         base.OnModelCreating(modelBuilder);
     }
 }

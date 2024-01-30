@@ -16,7 +16,7 @@ internal sealed class SqliteTemporaryTable<TEntity> : TemporaryTable<TEntity> wh
         var builder = new StringBuilder();
 
         var designTimeModel = Context.GetService<IDesignTimeModel>();
-        
+
         var model = designTimeModel.Model;
 
         var entityType = model.FindEntityType(typeof(TEntity));

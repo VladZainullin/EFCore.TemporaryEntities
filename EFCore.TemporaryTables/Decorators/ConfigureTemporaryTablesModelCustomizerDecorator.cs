@@ -35,14 +35,11 @@ internal sealed class ConfigureTemporaryTablesModelCustomizerDecorator : IModelC
             if (!Attribute.IsDefined(type, typeof(TemporaryTableAttribute))) continue;
 
             var attribute = type.GetCustomAttribute<TemporaryTableAttribute>();
-            
+
             var entityTypeBuilder = modelBuilder.Entity(type);
 
-            if (attribute is { Name: not null })
-            {
-                entityTypeBuilder.ToTable(attribute.Name);
-            }
-            
+            if (attribute is { Name: not null }) entityTypeBuilder.ToTable(attribute.Name);
+
             entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);
         }
     }
