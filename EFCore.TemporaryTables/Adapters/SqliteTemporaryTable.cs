@@ -21,6 +21,22 @@ internal sealed class SqliteTemporaryTable<TEntity> : TemporaryTable<TEntity> wh
 
         var entityType = model.FindEntityType(typeof(TEntity));
 
+        if (ReferenceEquals(entityType, default))
+        {
+            throw new InvalidOperationException($"Type '{typeof(TEntity)}' not register in DbContext");
+        }
+
+        CreateTable(builder, entityType);
+
+        CreateIndexes(entityType, builder);
+
+        var sql = builder.ToString();
+
+        await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+    }
+
+    private static void CreateTable(StringBuilder builder, IEntityType? entityType)
+    {
         builder
             .Append("create temporary table if not exists \"")
             .Append(entityType.GetTableName())
@@ -33,14 +49,27 @@ internal sealed class SqliteTemporaryTable<TEntity> : TemporaryTable<TEntity> wh
                 .Append(property.GetColumnName())
                 .Append("\" ")
                 .Append(property.GetColumnType());
-
+                
             if (property.IsNullable) builder.Append(" null");
 
+            if (property.IsKey())
+            {
+                var key = property.FindContainingPrimaryKey()!;
+
+                builder
+                    .Append(" constraint ")
+                    .Append(key.GetName())
+                    .Append(" primary key");
+            }
+                
             builder.Append(", ");
         }
 
         builder.Remove(builder.Length - 2, 2).Append(");");
+    }
 
+    private static void CreateIndexes(IEntityType entityType, StringBuilder builder)
+    {
         foreach (var index in entityType.GetIndexes())
         {
             builder
@@ -73,10 +102,6 @@ internal sealed class SqliteTemporaryTable<TEntity> : TemporaryTable<TEntity> wh
 
             builder.Append(");");
         }
-
-        var sql = builder.ToString();
-
-        await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
     }
 
     public override async Task DropAsync(CancellationToken cancellationToken = default)
