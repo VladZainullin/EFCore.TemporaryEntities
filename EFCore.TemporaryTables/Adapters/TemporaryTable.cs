@@ -21,6 +21,8 @@ public abstract class TemporaryTable<TEntity> :
     {
         Context = context;
     }
+    
+    protected IDesignTimeModel DesignTimeModel => Context.GetService<IDesignTimeModel>();
 
     private DbSet<TEntity> Set => Context.Set<TEntity>();
 

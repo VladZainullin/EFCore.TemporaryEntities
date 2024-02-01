@@ -26,7 +26,7 @@ internal sealed class SqliteTemporaryTable<TEntity> : TemporaryTable<TEntity> wh
             throw new InvalidOperationException($"Type '{typeof(TEntity)}' not register in DbContext");
         }
 
-        CreateTable(builder, entityType);
+        CreateTable(entityType, builder);
 
         CreateIndexes(entityType, builder);
 
@@ -35,37 +35,60 @@ internal sealed class SqliteTemporaryTable<TEntity> : TemporaryTable<TEntity> wh
         await Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
     }
 
-    private static void CreateTable(StringBuilder builder, IEntityType? entityType)
+    private void CreateTable(IEntityType entityType, StringBuilder builder)
     {
         builder
             .Append("create temporary table if not exists \"")
             .Append(entityType.GetTableName())
             .Append("\" (");
 
-        foreach (var property in entityType.GetProperties())
-        {
-            builder
-                .Append('"')
-                .Append(property.GetColumnName())
-                .Append("\" ")
-                .Append(property.GetColumnType());
-                
-            if (property.IsNullable) builder.Append(" null");
-
-            if (property.IsKey())
-            {
-                var key = property.FindContainingPrimaryKey()!;
-
-                builder
-                    .Append(" constraint ")
-                    .Append(key.GetName())
-                    .Append(" primary key");
-            }
-                
-            builder.Append(", ");
-        }
+        CreateColumns(entityType, builder);
 
         builder.Remove(builder.Length - 2, 2).Append(");");
+    }
+
+    private void CreateColumns(IEntityType entityType, StringBuilder builder)
+    {
+        foreach (var property in entityType.GetProperties())
+        {
+            CreateColumn(property, entityType, builder);
+        }
+
+        foreach (var navigation in entityType.GetNavigations())
+        {
+            CreateColumns(navigation.TargetEntityType, builder);
+        }
+    }
+
+    private void CreateColumn(IProperty property, IEntityType entityType, StringBuilder builder)
+    {
+        builder
+            .Append('"')
+            .Append(property.GetColumnName())
+            .Append("\" ")
+            .Append(property.GetColumnType());
+                
+        if (property.IsNullable) builder.Append(" null");
+
+        if (property.IsKey())
+        {
+            var key = property.FindContainingPrimaryKey()!;
+
+            builder
+                .Append(" constraint ")
+                .Append(key.GetName())
+                .Append(" primary key");
+                
+        }
+
+        var propertyEntityType = DesignTimeModel.Model.FindEntityType(property.ClrType);
+
+        if (!ReferenceEquals(propertyEntityType, default))
+        {
+            var d = propertyEntityType.IsInOwnershipPath(entityType);
+        }
+                
+        builder.Append(", ");
     }
 
     private static void CreateIndexes(IEntityType entityType, StringBuilder builder)
