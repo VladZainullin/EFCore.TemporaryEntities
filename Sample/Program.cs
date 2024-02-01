@@ -22,7 +22,8 @@ public static class Program
 
         var modelDependencies = context.GetService<ModelDependencies>();
         
-        var modelBuilder = new ModelBuilder(conventionSet, modelDependencies).Entity(context.EntityTypeBuilder);
+        var modelBuilder = new ModelBuilder(conventionSet, modelDependencies)
+            .SharedTypeEntity(nameof(People), context.EntityTypeBuilder);
         var model = modelBuilder.Model.FinalizeModel();
 
         var runtimeEmptyModelRelational = modelRuntimeInitializer.Initialize(new ModelBuilder(conventionSet, modelDependencies).Model.FinalizeModel())
@@ -44,7 +45,7 @@ public static class Program
         await context.Database.ExecuteSqlRawAsync(sql, cancellationToken: cancellationToken);
 
         var peoples = await context
-            .Set<People>()
+            .Set<People>(nameof(People))
             .ToListAsync(cancellationToken);
     }
 }

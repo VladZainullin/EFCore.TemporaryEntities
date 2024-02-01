@@ -48,7 +48,8 @@ public sealed class AppDbContext : DbContext
             entityTypeBuilder.OwnsOne(p => p.Address);
         };
         
-        modelBuilder.Entity(EntityTypeBuilder);
+        modelBuilder.SharedTypeEntity(nameof(People), EntityTypeBuilder);
+        modelBuilder.SharedTypeEntity(nameof(People) + 2, EntityTypeBuilder);
 
         base.OnModelCreating(modelBuilder);
     }
