@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -17,26 +16,21 @@ public static class Program
         await context.Database.BeginTransactionAsync(cancellationToken);
 
         var conventionSet = context.GetService<IConventionSetBuilder>().CreateConventionSet();
-        
-        var modelBuilder = new ModelBuilder(conventionSet).Entity(context.EntityTypeBuilder);
-
         var modelRuntimeInitializer = context.GetService<IModelRuntimeInitializer>();
         var modelDiffer = context.GetService<IMigrationsModelDiffer>();
         var migrationsSqlGenerator = context.GetService<IMigrationsSqlGenerator>();
-
+        
+        var modelBuilder = new ModelBuilder(conventionSet).Entity(context.EntityTypeBuilder);
         var model = modelBuilder.Model.FinalizeModel();
 
         var runtimeEmptyModelRelational = modelRuntimeInitializer.Initialize(new ModelBuilder(conventionSet).Model.FinalizeModel())
             .GetRelationalModel();
-
         var runtimeModel = modelRuntimeInitializer.Initialize(model);
-
         var runtimeModelRelational = runtimeModel.GetRelationalModel();
 
         var migrationOperations = modelDiffer.GetDifferences(
             runtimeEmptyModelRelational,
             runtimeModelRelational);
-
         var migrationCommands = migrationsSqlGenerator.Generate(
             migrationOperations);
 
