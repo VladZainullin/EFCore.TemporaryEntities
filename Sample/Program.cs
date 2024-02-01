@@ -19,11 +19,13 @@ public static class Program
         var modelRuntimeInitializer = context.GetService<IModelRuntimeInitializer>();
         var modelDiffer = context.GetService<IMigrationsModelDiffer>();
         var migrationsSqlGenerator = context.GetService<IMigrationsSqlGenerator>();
+
+        var modelDependencies = context.GetService<ModelDependencies>();
         
-        var modelBuilder = new ModelBuilder(conventionSet).Entity(context.EntityTypeBuilder);
+        var modelBuilder = new ModelBuilder(conventionSet, modelDependencies).Entity(context.EntityTypeBuilder);
         var model = modelBuilder.Model.FinalizeModel();
 
-        var runtimeEmptyModelRelational = modelRuntimeInitializer.Initialize(new ModelBuilder(conventionSet).Model.FinalizeModel())
+        var runtimeEmptyModelRelational = modelRuntimeInitializer.Initialize(new ModelBuilder(conventionSet, modelDependencies).Model.FinalizeModel())
             .GetRelationalModel();
         var runtimeModel = modelRuntimeInitializer.Initialize(model);
         var runtimeModelRelational = runtimeModel.GetRelationalModel();
@@ -44,25 +46,5 @@ public static class Program
         var peoples = await context
             .Set<People>()
             .ToListAsync(cancellationToken);
-
-        // try
-        // {
-        //     var peoples = context.TemporaryTable<People>();
-        //     await peoples.CreateAsync(cancellationToken);
-        //     await peoples.DropAsync(cancellationToken);
-        //     await context.SaveChangesAsync(cancellationToken);
-        //
-        //     await context.Database.CommitTransactionAsync(cancellationToken);
-        // }
-        // catch
-        // {
-        //     await context.Database.RollbackTransactionAsync(cancellationToken);
-        //     throw;
-        // }
-    }
-
-    private static void Swap<T>(ref T old, ref T @new)
-    {
-        old = @new;
     }
 }
