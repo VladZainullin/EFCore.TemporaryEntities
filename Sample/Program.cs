@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Sample;
@@ -15,7 +16,7 @@ public static class Program
 
         await context.Database.BeginTransactionAsync(cancellationToken);
 
-        var conventionSet = SqliteConventionSetBuilder.Build();
+        var conventionSet = context.GetService<IConventionSetBuilder>().CreateConventionSet();
         
         var modelBuilder = new ModelBuilder(conventionSet).Entity(context.EntityTypeBuilder);
 
@@ -25,7 +26,7 @@ public static class Program
 
         var model = modelBuilder.Model.FinalizeModel();
 
-        var runtimeEmptyModelRelational = modelRuntimeInitializer.Initialize(new ModelBuilder().Model.FinalizeModel())
+        var runtimeEmptyModelRelational = modelRuntimeInitializer.Initialize(new ModelBuilder(conventionSet).Model.FinalizeModel())
             .GetRelationalModel();
 
         var runtimeModel = modelRuntimeInitializer.Initialize(model);
