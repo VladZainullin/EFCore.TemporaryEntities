@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Sample;
+namespace EFCore.TemporaryTables;
 
 internal sealed class IncludeInMigrationTableDecorator : ITable
 {
@@ -69,7 +69,10 @@ internal sealed class IncludeInMigrationTableDecorator : ITable
     public IEnumerable<IColumn> Columns => _table.Columns;
     public bool IsExcludedFromMigrations => false; // Decorate
     public IEnumerable<IForeignKeyConstraint> ForeignKeyConstraints => _table.ForeignKeyConstraints;
-    public IEnumerable<IForeignKeyConstraint> ReferencingForeignKeyConstraints => _table.ReferencingForeignKeyConstraints;
+
+    public IEnumerable<IForeignKeyConstraint> ReferencingForeignKeyConstraints =>
+        _table.ReferencingForeignKeyConstraints;
+
     public IEnumerable<IUniqueConstraint> UniqueConstraints => _table.UniqueConstraints;
     public IPrimaryKeyConstraint? PrimaryKey => _table.PrimaryKey;
     public IEnumerable<ITableIndex> Indexes => _table.Indexes;

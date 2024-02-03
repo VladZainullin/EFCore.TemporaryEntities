@@ -1,3 +1,4 @@
+using EFCore.TemporaryTables;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Logging;
@@ -7,11 +8,10 @@ namespace Sample;
 public sealed class AppDbContext : DbContext
 {
     public Action<EntityTypeBuilder<People>> EntityTypeBuilder { get; private set; } = default!;
-    
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            //.UseNpgsql("Host=localhost;Port=5433;Database=postgres;Username=postgres;Password=123456;")
             .UseSqlite("DataSource=/Users/vadislavzainullin/RiderProjects/EFCore.TemporaryTables/Sample/app.db")
             .LogTo(Console.WriteLine, LogLevel.Information);
 
@@ -43,7 +43,7 @@ public sealed class AppDbContext : DbContext
                 .OwnsOne(p => p.Work, ownedNavigationBuilder => { ownedNavigationBuilder.OwnsOne(w => w.Address); });
 
             entityTypeBuilder.OwnsOne(p => p.Address);
-            entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);
+            entityTypeBuilder.ToTemporaryTable();
         });
 
         base.OnModelCreating(modelBuilder);

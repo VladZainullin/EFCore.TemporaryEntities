@@ -2,19 +2,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Sample;
+namespace EFCore.TemporaryTables;
 
-public class TemporaryTableRelationalModel : IRelationalModel
+internal sealed class TemporaryTableRelationalModel : IRelationalModel
 {
-    private readonly IRelationalModel _relationalModel;
     private readonly IEntityType _entityType;
+    private readonly IRelationalModel _relationalModel;
 
     public TemporaryTableRelationalModel(IRelationalModel relationalModel, IEntityType entityType)
     {
         _relationalModel = relationalModel;
         _entityType = entityType;
     }
-    
+
     public IAnnotation? FindAnnotation(string name)
     {
         return default;
@@ -52,7 +52,8 @@ public class TemporaryTableRelationalModel : IRelationalModel
         return default;
     }
 
-    public TValue GetOrAddRuntimeAnnotationValue<TValue, TArg>(string name, Func<TArg?, TValue> valueFactory, TArg? factoryArgument)
+    public TValue GetOrAddRuntimeAnnotationValue<TValue, TArg>(string name, Func<TArg?, TValue> valueFactory,
+        TArg? factoryArgument)
     {
         return _relationalModel.GetOrAddRuntimeAnnotationValue(name, valueFactory, factoryArgument);
     }
