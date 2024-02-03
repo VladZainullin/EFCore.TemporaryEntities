@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace EFCore.TemporaryTables;
 
-internal sealed class TemporaryTableRelationalModel : IRelationalModel
+internal sealed class OnlyTemporaryTableDecorator : IRelationalModel
 {
     private readonly IEntityType _entityType;
     private readonly IRelationalModel _relationalModel;
 
-    public TemporaryTableRelationalModel(IRelationalModel relationalModel, IEntityType entityType)
+    public OnlyTemporaryTableDecorator(IRelationalModel relationalModel, IEntityType entityType)
     {
         _relationalModel = relationalModel;
         _entityType = entityType;
@@ -25,7 +25,7 @@ internal sealed class TemporaryTableRelationalModel : IRelationalModel
         return Enumerable.Empty<IAnnotation>();
     }
 
-    public object? this[string name] => _relationalModel[name];
+    public object? this[string name] => default;
 
     public IAnnotation? FindRuntimeAnnotation(string name)
     {
@@ -80,7 +80,7 @@ internal sealed class TemporaryTableRelationalModel : IRelationalModel
 
     public IStoreStoredProcedure? FindStoredProcedure(string name, string? schema)
     {
-        return _relationalModel.FindStoredProcedure(name, schema);
+        return default;
     }
 
     public IModel Model => _relationalModel.Model;

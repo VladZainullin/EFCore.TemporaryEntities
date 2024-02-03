@@ -37,7 +37,7 @@ public sealed class TemporaryTable<TEntity> :
         var findEntityType = _context.Model.FindEntityType(typeof(TEntity));
         if (ReferenceEquals(findEntityType, default)) throw new Exception();
 
-        var temporaryTableRelationalModel = new TemporaryTableRelationalModel(
+        var temporaryTableRelationalModel = new OnlyTemporaryTableDecorator(
             relationalModel,
             findEntityType);
 
@@ -67,7 +67,7 @@ public sealed class TemporaryTable<TEntity> :
         var findEntityType = _context.Model.FindEntityType(typeof(TEntity));
         if (ReferenceEquals(findEntityType, default)) throw new Exception();
 
-        var temporaryTableRelationalModel = new TemporaryTableRelationalModel(
+        var temporaryTableRelationalModel = new OnlyTemporaryTableDecorator(
             relationalModel,
             findEntityType);
 
