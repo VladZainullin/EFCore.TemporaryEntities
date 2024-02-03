@@ -11,8 +11,6 @@ public static class Program
 
         await using var context = new AppDbContext();
 
-        await context.Database.BeginTransactionAsync(cancellationToken);
-
         var table = context.TemporaryTable<People>();
 
         await table.CreateAsync(cancellationToken);
