@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Sample;
@@ -14,26 +15,29 @@ public static class Program
         await using var context = new AppDbContext();
 
         await context.Database.BeginTransactionAsync(cancellationToken);
-
-        var conventionSet = context.GetService<IConventionSetBuilder>().CreateConventionSet();
-        var modelRuntimeInitializer = context.GetService<IModelRuntimeInitializer>();
+        
+        var stopwatch = Stopwatch.StartNew();
+        
         var modelDiffer = context.GetService<IMigrationsModelDiffer>();
         var migrationsSqlGenerator = context.GetService<IMigrationsSqlGenerator>();
 
-        var modelDependencies = context.GetService<ModelDependencies>();
+        var designTimeModel = context.GetService<IDesignTimeModel>();
+        var relationalModel = designTimeModel.Model.GetRelationalModel();
+
+        var findEntityType = context.Model.FindEntityType(typeof(People));
+        if (ReferenceEquals(findEntityType, default))
+        {
+            throw new Exception();
+        }
         
-        var modelBuilder = new ModelBuilder(conventionSet, modelDependencies)
-            .SharedTypeEntity(nameof(People), context.EntityTypeBuilder);
-        var model = modelBuilder.Model.FinalizeModel();
-
-        var runtimeEmptyModelRelational = modelRuntimeInitializer.Initialize(new ModelBuilder(conventionSet, modelDependencies).Model.FinalizeModel())
-            .GetRelationalModel();
-        var runtimeModel = modelRuntimeInitializer.Initialize(model);
-        var runtimeModelRelational = runtimeModel.GetRelationalModel();
-
+        var temporaryTableRelationalModel = new TemporaryTableRelationalModel(
+            relationalModel,
+            findEntityType);
+        
         var migrationOperations = modelDiffer.GetDifferences(
-            runtimeEmptyModelRelational,
-            runtimeModelRelational);
+            default,
+            temporaryTableRelationalModel);
+        
         var migrationCommands = migrationsSqlGenerator.Generate(
             migrationOperations);
 
@@ -43,9 +47,11 @@ public static class Program
             .Aggregate((s1, s2) => s1 + "\n" + s2);
 
         await context.Database.ExecuteSqlRawAsync(sql, cancellationToken: cancellationToken);
+        
+        Console.WriteLine(stopwatch.ElapsedMilliseconds);
 
         var peoples = await context
-            .Set<People>(nameof(People))
+            .Set<People>()
             .ToListAsync(cancellationToken);
     }
 }

@@ -11,6 +11,8 @@ public sealed class People
     public required Work Work { get; init; }
 
     public required Address Address { get; init; }
+
+    public required Religion Religion { get; init; }
 }
 
 public sealed class Identification

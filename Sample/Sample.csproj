@@ -8,10 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EFCore.TemporaryTables\EFCore.TemporaryTables.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Ardalis.SmartEnum.EFCore" Version="8.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.15">
             <PrivateAssets>all</PrivateAssets>

@@ -1,5 +1,3 @@
-using System.Reflection;
-using EFCore.TemporaryTables.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Logging;
@@ -15,7 +13,6 @@ public sealed class AppDbContext : DbContext
         optionsBuilder
             //.UseNpgsql("Host=localhost;Port=5433;Database=postgres;Username=postgres;Password=123456;")
             .UseSqlite("DataSource=/Users/vadislavzainullin/RiderProjects/EFCore.TemporaryTables/Sample/app.db")
-            .UseTemporaryTables(o => { o.Assemblies.Add(Assembly.GetExecutingAssembly()); })
             .LogTo(Console.WriteLine, LogLevel.Information);
 
         base.OnConfiguring(optionsBuilder);
@@ -23,7 +20,7 @@ public sealed class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        EntityTypeBuilder = entityTypeBuilder =>
+        modelBuilder.Entity<People>(entityTypeBuilder =>
         {
             entityTypeBuilder.HasKey(p => p.Id);
 
@@ -46,10 +43,8 @@ public sealed class AppDbContext : DbContext
                 .OwnsOne(p => p.Work, ownedNavigationBuilder => { ownedNavigationBuilder.OwnsOne(w => w.Address); });
 
             entityTypeBuilder.OwnsOne(p => p.Address);
-        };
-        
-        modelBuilder.SharedTypeEntity(nameof(People), EntityTypeBuilder);
-        modelBuilder.SharedTypeEntity(nameof(People) + 2, EntityTypeBuilder);
+            entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);
+        });
 
         base.OnModelCreating(modelBuilder);
     }
