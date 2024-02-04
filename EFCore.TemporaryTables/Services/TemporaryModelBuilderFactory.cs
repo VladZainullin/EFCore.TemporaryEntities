@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 
-namespace EFCore.TemporaryTables;
+namespace EFCore.TemporaryTables.Services;
 
 internal sealed class TemporaryModelBuilderFactory : ITemporaryModelBuilderFactory
 {
@@ -22,29 +22,20 @@ internal sealed class TemporaryModelBuilderFactory : ITemporaryModelBuilderFacto
         _designTimeModel = designTimeModel;
         _modelRuntimeInitializer = modelRuntimeInitializer;
     }
-    
+
     public IRelationalModel CreateRelationalModelForTemporaryEntity<TEntity>() where TEntity : class
     {
         var entityType = _designTimeModel.Model.FindEntityType(typeof(TEntity));
-        if (ReferenceEquals(entityType, default))
-        {
-            throw new InvalidOperationException();
-        }
+        if (ReferenceEquals(entityType, default)) throw new InvalidOperationException();
 
         var temporaryTableAnnotation = entityType.FindAnnotation("TemporaryTable");
-        if (ReferenceEquals(temporaryTableAnnotation, default))
-        {
-            throw new InvalidOperationException(); 
-        }
+        if (ReferenceEquals(temporaryTableAnnotation, default)) throw new InvalidOperationException();
 
         var configureTemporaryEntity = temporaryTableAnnotation.Value as Action<EntityTypeBuilder<TEntity>>;
-        if (ReferenceEquals(configureTemporaryEntity, default))
-        {
-            throw new InvalidOperationException();
-        }
+        if (ReferenceEquals(configureTemporaryEntity, default)) throw new InvalidOperationException();
 
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
-        
+
         var modelBuilder = new ModelBuilder(conventionSet);
 
         configureTemporaryEntity(modelBuilder.Entity<TEntity>());

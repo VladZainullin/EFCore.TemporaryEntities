@@ -19,7 +19,7 @@ public static class DbContextExtensions
 
         return context.Set<TEntity>();
     }
-    
+
     public static DbSet<TEntity> CreateTemporaryTable<TEntity>(
         this DbContext context,
         CancellationToken cancellationToken = default)
@@ -33,7 +33,7 @@ public static class DbContextExtensions
 
         return context.Set<TEntity>();
     }
-    
+
     public static Task DropTemporaryTableAsync<TEntity>(
         this DbContext context,
         CancellationToken cancellationToken = default)
@@ -45,7 +45,7 @@ public static class DbContextExtensions
 
         return context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
     }
-    
+
     public static void DropTemporaryTable<TEntity>(
         this DbContext context,
         CancellationToken cancellationToken = default)

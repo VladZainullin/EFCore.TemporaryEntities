@@ -1,4 +1,5 @@
 using EFCore.TemporaryTables.Interfaces;
+using EFCore.TemporaryTables.Services;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,7 +8,7 @@ namespace EFCore.TemporaryTables;
 internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtension
 {
     private ExtensionInfo? _info;
-    
+
     public void ApplyServices(IServiceCollection services)
     {
         services
@@ -15,7 +16,9 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
             .AddScoped<ITemporaryTableSqlGenerator, TemporaryTableSqlGenerator>();
     }
 
-    public void Validate(IDbContextOptions options) {}
+    public void Validate(IDbContextOptions options)
+    {
+    }
 
     public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);
 
@@ -26,6 +29,9 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
         public ExtensionInfo(IDbContextOptionsExtension extension) : base(extension)
         {
         }
+
+        public override bool IsDatabaseProvider => default;
+        public override string LogFragment => _logFragment.Value;
 
         public override int GetServiceProviderHashCode()
         {
@@ -40,8 +46,5 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
         public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
         {
         }
-
-        public override bool IsDatabaseProvider => default;
-        public override string LogFragment => _logFragment.Value;
     }
 }

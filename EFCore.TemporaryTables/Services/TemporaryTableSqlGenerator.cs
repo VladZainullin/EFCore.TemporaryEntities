@@ -3,13 +3,13 @@ using EFCore.TemporaryTables.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EFCore.TemporaryTables;
+namespace EFCore.TemporaryTables.Services;
 
 internal sealed class TemporaryTableSqlGenerator : ITemporaryTableSqlGenerator
 {
-    private readonly ITemporaryModelBuilderFactory _temporaryModelBuilderFactory;
     private readonly IMigrationsModelDiffer _migrationsModelDiffer;
     private readonly IMigrationsSqlGenerator _migrationsSqlGenerator;
+    private readonly ITemporaryModelBuilderFactory _temporaryModelBuilderFactory;
 
     public TemporaryTableSqlGenerator(
         ITemporaryModelBuilderFactory temporaryModelBuilderFactory,
@@ -33,7 +33,7 @@ internal sealed class TemporaryTableSqlGenerator : ITemporaryTableSqlGenerator
     {
         var relationalFinalizeModel = _temporaryModelBuilderFactory.CreateRelationalModelForTemporaryEntity<TEntity>();
 
-        var sql = CreateSql(source: relationalFinalizeModel);
+        var sql = CreateSql(relationalFinalizeModel);
         return sql;
     }
 
@@ -44,10 +44,7 @@ internal sealed class TemporaryTableSqlGenerator : ITemporaryTableSqlGenerator
 
         var stringBuilder = new StringBuilder();
 
-        foreach (var migrationCommand in migrationCommands)
-        {
-            stringBuilder.Append(migrationCommand.CommandText);
-        }
+        foreach (var migrationCommand in migrationCommands) stringBuilder.Append(migrationCommand.CommandText);
 
         stringBuilder.Replace("CREATE TABLE", "CREATE TEMPORARY TABLE IF NOT EXISTS");
 
