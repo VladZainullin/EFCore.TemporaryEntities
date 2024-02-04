@@ -90,7 +90,7 @@ internal sealed class OnlyTemporaryTableDecorator : IRelationalModel
         get
         {
             return _relationalModel.Tables
-                .Where(t => t.Name == _entityType.GetTableName())
+                // .Where(t => t.Name == _entityType.GetTableName())
                 .Select(t => new IncludeInMigrationTableDecorator(t));
         }
     }

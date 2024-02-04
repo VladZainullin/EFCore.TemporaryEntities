@@ -26,6 +26,8 @@ public sealed class AppDbContext : DbContext
                     p => p.Identification,
                     ownedNavigationBuilder =>
                     {
+                        ownedNavigationBuilder.ToTable("temp_identification");
+                        
                         ownedNavigationBuilder
                             .HasIndex(i => i.Gender)
                             .IsDescending();
