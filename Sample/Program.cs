@@ -49,6 +49,10 @@ public static class Program
         await using var context = new AppDbContext();
 
         var set = await context.CreateTemporaryTable<People>(cancellationToken);
+
+        set.Add(People);
+
+        await context.SaveChangesAsync(cancellationToken);
         
         var peoples = await set.ToListAsync(cancellationToken);
         
