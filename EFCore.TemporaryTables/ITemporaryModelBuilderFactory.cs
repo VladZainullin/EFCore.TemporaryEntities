@@ -14,17 +14,17 @@ public interface ITemporaryModelBuilderFactory
 internal sealed class TemporaryModelBuilderFactory : ITemporaryModelBuilderFactory
 {
     private readonly IConventionSetBuilder _conventionSetBuilder;
-    private readonly ModelDependencies _modelDependencies;
     private readonly IDesignTimeModel _designTimeModel;
+    private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
 
     public TemporaryModelBuilderFactory(
         IConventionSetBuilder conventionSetBuilder,
-        ModelDependencies modelDependencies,
-        IDesignTimeModel designTimeModel)
+        IDesignTimeModel designTimeModel,
+        IModelRuntimeInitializer modelRuntimeInitializer)
     {
         _conventionSetBuilder = conventionSetBuilder;
-        _modelDependencies = modelDependencies;
         _designTimeModel = designTimeModel;
+        _modelRuntimeInitializer = modelRuntimeInitializer;
     }
     
     public IRelationalModel CreateRelationalModelForTemporaryEntity<TEntity>() where TEntity : class
@@ -49,12 +49,14 @@ internal sealed class TemporaryModelBuilderFactory : ITemporaryModelBuilderFacto
 
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
         
-        var modelBuilder = new ModelBuilder(conventionSet, _modelDependencies);
+        var modelBuilder = new ModelBuilder(conventionSet);
 
         configureTemporaryEntity(modelBuilder.Entity<TEntity>());
 
         var model = modelBuilder.Model;
         var finalizeModel = model.FinalizeModel();
+
+        _modelRuntimeInitializer.Initialize(finalizeModel);
 
         var relationalFinalizeModel = finalizeModel.GetRelationalModel();
 

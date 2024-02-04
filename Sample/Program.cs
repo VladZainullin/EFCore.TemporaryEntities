@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+﻿using EFCore.TemporaryTables.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Sample;
 
@@ -47,5 +47,11 @@ public static class Program
         var cancellationToken = CancellationToken.None;
 
         await using var context = new AppDbContext();
+
+        var set = await context.CreateTemporaryTable<People>(cancellationToken);
+        
+        var peoples = await set.ToListAsync(cancellationToken);
+        
+        await context.DropTemporaryTable<People>(cancellationToken);
     }
 }

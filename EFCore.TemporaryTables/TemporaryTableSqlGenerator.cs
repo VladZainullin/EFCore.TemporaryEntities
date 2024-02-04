@@ -55,6 +55,8 @@ internal sealed class TemporaryTableSqlGenerator : ITemporaryTableSqlGenerator
             stringBuilder.Append(migrationCommand.CommandText);
         }
 
+        stringBuilder.Replace("CREATE TABLE", "CREATE TEMPORARY TABLE");
+
         return stringBuilder.ToString();
     }
 }

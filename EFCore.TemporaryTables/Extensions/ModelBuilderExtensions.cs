@@ -14,6 +14,8 @@ public static class ModelBuilderExtensions
         mutableEntityType.AddAnnotation("TemporaryTable", configure);
         mutableEntityType.SetIsTableExcludedFromMigrations(true);
 
+        configure(modelBuilder.Entity<TEntity>());
+
         return modelBuilder;
     }
 }

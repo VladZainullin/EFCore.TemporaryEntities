@@ -10,8 +10,8 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
     public void ApplyServices(IServiceCollection services)
     {
         services
-            .AddSingleton<ITemporaryModelBuilderFactory, TemporaryModelBuilderFactory>()
-            .AddSingleton<ITemporaryTableSqlGenerator, TemporaryTableSqlGenerator>();
+            .AddScoped<ITemporaryModelBuilderFactory, TemporaryModelBuilderFactory>()
+            .AddScoped<ITemporaryTableSqlGenerator, TemporaryTableSqlGenerator>();
     }
 
     public void Validate(IDbContextOptions options) {}
