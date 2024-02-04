@@ -4,6 +4,18 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <Authors>Vladislav Zainullin</Authors>
+        <Description>Temporary tables for Entity Framework Core.</Description>
+        <Copyright>Copyright 2024 © Vladislav Zainullin</Copyright>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>git://github.com/VladZainullin/EFCore.TemporaryTables</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
