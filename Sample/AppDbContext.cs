@@ -1,6 +1,6 @@
-using EFCore.TemporaryTables;
 using EFCore.TemporaryTables.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Logging;
 
 namespace Sample;
@@ -18,7 +18,7 @@ public sealed class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<People>(entityTypeBuilder =>
+        Configure = entityTypeBuilder =>
         {
             entityTypeBuilder.HasKey(p => p.Id);
 
@@ -28,7 +28,7 @@ public sealed class AppDbContext : DbContext
                     ownedNavigationBuilder =>
                     {
                         ownedNavigationBuilder.ToTable("temp_identification");
-                        
+
                         ownedNavigationBuilder
                             .HasIndex(i => i.Gender)
                             .IsDescending();
@@ -43,9 +43,13 @@ public sealed class AppDbContext : DbContext
                 .OwnsOne(p => p.Work, ownedNavigationBuilder => { ownedNavigationBuilder.OwnsOne(w => w.Address); });
 
             entityTypeBuilder.OwnsOne(p => p.Address);
-            entityTypeBuilder.ToTemporaryTable("temp_peoples");
-        });
+            entityTypeBuilder.ToTable("temp_peoples");
+        };
+        
+        modelBuilder.TemporaryEntity(Configure);
 
         base.OnModelCreating(modelBuilder);
     }
+
+    public Action<EntityTypeBuilder<People>> Configure { get; set; } = default!;
 }

@@ -1,6 +1,10 @@
-﻿using EFCore.TemporaryTables;
+﻿using System.Diagnostics;
 using EFCore.TemporaryTables.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Sample;
 
@@ -12,8 +16,32 @@ public static class Program
 
         await using var context = new AppDbContext();
 
-        var table = context.TemporaryTable<People>();
+        var stopwatch = Stopwatch.StartNew();
+
+        var conventionSetBuilder = context.GetService<IConventionSetBuilder>();
+        var conventionSet = conventionSetBuilder.CreateConventionSet();
+
+        var modelDependencies = context.GetService<ModelDependencies>();
+
+        var modelBuilder = new ModelBuilder(conventionSet, modelDependencies);
+
+        var contextConfigure = context.Configure;
         
+        contextConfigure(modelBuilder.Entity<People>());
+
+        var model = modelBuilder.Model.FinalizeModel();
+        
+        var modelRuntimeInitializer = context.GetService<IModelRuntimeInitializer>();
+        var runtimeModel = modelRuntimeInitializer.Initialize(model, true);
+
+        var migrationsModelDiffer = context.GetService<IMigrationsModelDiffer>();
+        
+        var operations = migrationsModelDiffer.GetDifferences(default, runtimeModel.GetRelationalModel());
+
+        Console.WriteLine(stopwatch.ElapsedMilliseconds);
+        
+        var table = context.TemporaryTable<People>();
+
         await table.CreateAsync(cancellationToken);
 
         await table.AddAsync(new People
