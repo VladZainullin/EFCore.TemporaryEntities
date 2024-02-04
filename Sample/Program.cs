@@ -1,4 +1,5 @@
-﻿using EFCore.TemporaryTables.Extensions;
+﻿using System.Diagnostics;
+using EFCore.TemporaryTables.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Sample;
@@ -16,8 +17,8 @@ public static class Program
         },
         Family = new Family
         {
-            QuantityOfChildren = default,
-            HasPartner = default
+            QuantityOfChildren = 0,
+            HasPartner = false
         },
         Work = new Work
         {
@@ -49,18 +50,25 @@ public static class Program
 
         try
         {
-            var temporaryTable = await context.CreateTemporaryTableAsync<People>();
+            for (var i = 0; i < 10; i++)
+            {
+                var stopwatch = Stopwatch.StartNew();
+                
+                var temporaryTable = await context.CreateTemporaryTableAsync<People>();
 
-            temporaryTable.Add(People);
+                temporaryTable.Add(People);
 
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
-            var peoples = await temporaryTable
-                .AsNoTracking()
-                .Where(p => p.Id == People.Id)
-                .SingleAsync();
+                var peoples = await temporaryTable
+                    .AsNoTracking()
+                    .Where(p => p.Id == People.Id)
+                    .SingleAsync();
+                
+                await context.DropTemporaryTableAsync<People>();
 
-            await context.DropTemporaryTableAsync<People>();
+                Console.WriteLine(stopwatch.ElapsedMilliseconds);
+            }
         }
         catch
         {

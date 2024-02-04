@@ -11,7 +11,7 @@ public static class ModelBuilderExtensions
     {
         var mutableEntityType = modelBuilder.Entity<TEntity>().Metadata;
 
-        mutableEntityType.AddAnnotation("TemporaryTable", configure);
+        modelBuilder.Entity<TEntity>().HasAnnotation("TemporaryTable", configure);
         mutableEntityType.SetIsTableExcludedFromMigrations(true);
 
         configure(modelBuilder.Entity<TEntity>());
