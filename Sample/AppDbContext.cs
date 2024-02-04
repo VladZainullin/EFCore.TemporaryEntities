@@ -1,14 +1,11 @@
 using EFCore.TemporaryTables;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Logging;
 
 namespace Sample;
 
 public sealed class AppDbContext : DbContext
 {
-    public Action<EntityTypeBuilder<People>> EntityTypeBuilder { get; private set; } = default!;
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
@@ -43,7 +40,7 @@ public sealed class AppDbContext : DbContext
                 .OwnsOne(p => p.Work, ownedNavigationBuilder => { ownedNavigationBuilder.OwnsOne(w => w.Address); });
 
             entityTypeBuilder.OwnsOne(p => p.Address);
-            entityTypeBuilder.ToTemporaryTable();
+            entityTypeBuilder.ToTemporaryTable("temp_peoples");
         });
 
         base.OnModelCreating(modelBuilder);
