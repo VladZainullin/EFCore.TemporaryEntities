@@ -25,7 +25,7 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
 
         public override int GetServiceProviderHashCode()
         {
-            throw new NotImplementedException();
+            return default;
         }
 
         public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other)
@@ -35,7 +35,6 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
 
         public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
         {
-            throw new NotImplementedException();
         }
 
         public override bool IsDatabaseProvider => default;
