@@ -2,5 +2,5 @@ namespace EFCore.TemporaryTables;
 
 public static class TemporaryTableAnnotationNames
 {
-    public const string IsTemporaryTable = "TemporaryTabe:IsTemporaryTable";
+    public static string IsTemporaryTable => "TemporaryTable:IsTemporaryTable";
 }
