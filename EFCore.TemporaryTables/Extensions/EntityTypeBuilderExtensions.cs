@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EFCore.TemporaryTables;
+namespace EFCore.TemporaryTables.Extensions;
 
 public static class EntityTypeBuilderExtensions
 {

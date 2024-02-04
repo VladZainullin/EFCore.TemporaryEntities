@@ -1,4 +1,5 @@
 ﻿using EFCore.TemporaryTables;
+using EFCore.TemporaryTables.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Sample;

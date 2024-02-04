@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace EFCore.TemporaryTables;
+namespace EFCore.TemporaryTables.Extensions;
 
 public static class DbContextExtensions
 {
