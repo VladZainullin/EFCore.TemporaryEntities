@@ -10,8 +10,4 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.15"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Exceptions\" />
-    </ItemGroup>
-
 </Project>
