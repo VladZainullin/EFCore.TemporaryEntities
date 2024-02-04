@@ -43,30 +43,28 @@ public static class Program
 
     public static async Task Main()
     {
-        var cancellationToken = CancellationToken.None;
-
         await using var context = new AppDbContext();
 
-        await context.Database.BeginTransactionAsync(cancellationToken);
+        await context.Database.BeginTransactionAsync();
 
         try
         {
-            var set = await context.CreateTemporaryTableAsync<People>(cancellationToken);
+            var temporaryTable = await context.CreateTemporaryTableAsync<People>();
 
-            set.Add(People);
+            temporaryTable.Add(People);
 
-            await context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync();
 
-            var peoples = await set
+            var peoples = await temporaryTable
                 .AsNoTracking()
                 .Where(p => p.Id == People.Id)
-                .SingleAsync(cancellationToken);
+                .SingleAsync();
 
-            await context.DropTemporaryTableAsync<People>(cancellationToken);
+            await context.DropTemporaryTableAsync<People>();
         }
         catch
         {
-            await context.Database.RollbackTransactionAsync(cancellationToken);
+            await context.Database.RollbackTransactionAsync();
             throw;
         }
     }
