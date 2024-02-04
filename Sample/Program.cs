@@ -1,4 +1,7 @@
-﻿namespace Sample;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+
+namespace Sample;
 
 public static class Program
 {

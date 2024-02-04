@@ -1,6 +1,5 @@
 using EFCore.TemporaryTables.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Logging;
 
 namespace Sample;
@@ -11,6 +10,7 @@ public sealed class AppDbContext : DbContext
     {
         optionsBuilder
             .UseSqlite("DataSource=/Users/vadislavzainullin/RiderProjects/EFCore.TemporaryTables/Sample/app.db")
+            .UseTemporaryTables()
             .LogTo(Console.WriteLine, LogLevel.Information);
 
         base.OnConfiguring(optionsBuilder);
@@ -18,7 +18,7 @@ public sealed class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        Configure = entityTypeBuilder =>
+        modelBuilder.TemporaryEntity<People>(entityTypeBuilder =>
         {
             entityTypeBuilder.HasKey(p => p.Id);
 
@@ -44,12 +44,8 @@ public sealed class AppDbContext : DbContext
 
             entityTypeBuilder.OwnsOne(p => p.Address);
             entityTypeBuilder.ToTable("temp_peoples");
-        };
-        
-        modelBuilder.TemporaryEntity(Configure);
+        });
 
         base.OnModelCreating(modelBuilder);
     }
-
-    public Action<EntityTypeBuilder<People>> Configure { get; set; } = default!;
 }
