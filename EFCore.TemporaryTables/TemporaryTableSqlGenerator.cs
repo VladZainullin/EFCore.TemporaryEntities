@@ -1,15 +1,9 @@
 using System.Text;
+using EFCore.TemporaryTables.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EFCore.TemporaryTables;
-
-public interface ITemporaryTableSqlGenerator
-{
-    string CreateTableSql<TEntity>() where TEntity : class;
-
-    string DropTableSql<TEntity>() where TEntity : class;
-}
 
 internal sealed class TemporaryTableSqlGenerator : ITemporaryTableSqlGenerator
 {

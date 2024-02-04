@@ -12,7 +12,6 @@ public static class Program
         {
             Name = "Vlad",
             Surname = "Zainullin",
-            DateOfBirth = DateTime.Parse("24.08.2002"),
             Gender = Gender.Male
         },
         Family = new Family
@@ -48,14 +47,27 @@ public static class Program
 
         await using var context = new AppDbContext();
 
-        var set = await context.CreateTemporaryTableAsync<People>(cancellationToken);
+        await context.Database.BeginTransactionAsync(cancellationToken);
 
-        set.Add(People);
+        try
+        {
+            var set = await context.CreateTemporaryTableAsync<People>(cancellationToken);
 
-        await context.SaveChangesAsync(cancellationToken);
-        
-        var peoples = await set.ToListAsync(cancellationToken);
-        
-        await context.DropTemporaryTableAsync<People>(cancellationToken);
+            set.Add(People);
+
+            await context.SaveChangesAsync(cancellationToken);
+
+            var peoples = await set
+                .AsNoTracking()
+                .Where(p => p.Id == People.Id)
+                .SingleAsync(cancellationToken);
+
+            await context.DropTemporaryTableAsync<People>(cancellationToken);
+        }
+        catch
+        {
+            await context.Database.RollbackTransactionAsync(cancellationToken);
+            throw;
+        }
     }
 }

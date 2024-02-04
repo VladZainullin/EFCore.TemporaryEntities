@@ -19,8 +19,6 @@ public sealed class Identification
 
     public required string Surname { get; init; }
 
-    public required DateTime DateOfBirth { get; init; }
-
     public required Gender Gender { get; init; }
 }
 

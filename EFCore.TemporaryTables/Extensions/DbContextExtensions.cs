@@ -1,3 +1,4 @@
+using EFCore.TemporaryTables.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 

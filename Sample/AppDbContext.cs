@@ -9,7 +9,8 @@ public sealed class AppDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            .UseSqlite("DataSource=/Users/vadislavzainullin/RiderProjects/EFCore.TemporaryTables/Sample/app.db")
+            .UseNpgsql("Host=localhost;Port=5433;Database=postgres;Username=postgres;Password=123456")
+            //.UseSqlite("DataSource=/Users/vadislavzainullin/RiderProjects/EFCore.TemporaryTables/Sample/app.db")
             .UseTemporaryTables()
             .LogTo(Console.WriteLine, LogLevel.Information);
 
@@ -32,10 +33,6 @@ public sealed class AppDbContext : DbContext
                         ownedNavigationBuilder
                             .HasIndex(i => i.Gender)
                             .IsDescending();
-
-                        ownedNavigationBuilder
-                            .HasIndex(i => i.DateOfBirth)
-                            .IsUnique();
                     })
                 .OwnsOne(
                     p => p.Family,
