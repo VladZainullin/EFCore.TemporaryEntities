@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EFCore.TemporaryTables;
@@ -9,8 +8,7 @@ public static class EntityTypeBuilderExtensions
         this EntityTypeBuilder<TEntity> entityTypeBuilder)
         where TEntity : class
     {
-        entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);
-        entityTypeBuilder.Metadata.AddAnnotation("TemporaryTable", true);
+        entityTypeBuilder.Metadata.AddAnnotation(TemporaryTableAnnotationNames.IsTemporaryTable, true);
 
         return entityTypeBuilder;
     }
