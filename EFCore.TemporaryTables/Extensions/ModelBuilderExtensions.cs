@@ -9,12 +9,27 @@ public static class ModelBuilderExtensions
         this ModelBuilder modelBuilder,
         Action<EntityTypeBuilder<TEntity>> configure) where TEntity : class
     {
-        var mutableEntityType = modelBuilder.Entity<TEntity>().Metadata;
+        var entityTypeBuilder = modelBuilder.Entity<TEntity>();
+        
+        configure(entityTypeBuilder);
+        
+        entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);
+        entityTypeBuilder.HasAnnotation("TemporaryTable", configure);
 
-        modelBuilder.Entity<TEntity>().HasAnnotation("TemporaryTable", configure);
-        mutableEntityType.SetIsTableExcludedFromMigrations(true);
-
-        configure(modelBuilder.Entity<TEntity>());
+        return modelBuilder;
+    }
+    
+    public static ModelBuilder TemporaryEntity(
+        this ModelBuilder modelBuilder,
+        Type type,
+        Action<EntityTypeBuilder> configure)
+    {
+        var entityTypeBuilder = modelBuilder.Entity(type);
+        
+        configure(entityTypeBuilder);
+        
+        entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);
+        entityTypeBuilder.HasAnnotation("TemporaryTable", configure);
 
         return modelBuilder;
     }
