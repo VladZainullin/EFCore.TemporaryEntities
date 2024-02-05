@@ -6,7 +6,7 @@ namespace Sample;
 
 public static class Program
 {
-    private static readonly People People = new()
+    private static People People => new()
     {
         Id = Guid.NewGuid(),
         Identification = new Identification
@@ -52,8 +52,6 @@ public static class Program
         {
             for (var i = 0; i < 10; i++)
             {
-                var stopwatch = Stopwatch.StartNew();
-                
                 var temporaryTable = await context.CreateTemporaryTableAsync<People>();
 
                 temporaryTable.Add(People);
@@ -62,12 +60,9 @@ public static class Program
 
                 var peoples = await temporaryTable
                     .AsNoTracking()
-                    .Where(p => p.Id == People.Id)
-                    .SingleAsync();
+                    .ToListAsync();
                 
                 await context.DropTemporaryTableAsync<People>();
-
-                Console.WriteLine(stopwatch.ElapsedMilliseconds);
             }
         }
         catch
