@@ -47,6 +47,7 @@ internal sealed class TemporaryTableSqlGenerator : ITemporaryTableSqlGenerator
         foreach (var migrationCommand in migrationCommands) stringBuilder.Append(migrationCommand.CommandText);
 
         stringBuilder.Replace("CREATE TABLE", "CREATE TEMPORARY TABLE IF NOT EXISTS");
+        stringBuilder.Replace("DROP TABLE", "DROP TABLE IF EXISTS");
 
         return stringBuilder.ToString();
     }
