@@ -10,25 +10,22 @@ namespace EFCore.TemporaryTables.Services;
 internal sealed class TemporaryModelBuilderFactory : ITemporaryModelBuilderFactory
 {
     private readonly IConventionSetBuilder _conventionSetBuilder;
-    private readonly ModelDependencies _modelDependencies;
-    private readonly IModel _designTimeModel;
+    private readonly IDesignTimeModel _designTimeModel;
     private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
 
     public TemporaryModelBuilderFactory(
         IConventionSetBuilder conventionSetBuilder,
-        ModelDependencies modelDependencies,
-        IModel designTimeModel,
+        IDesignTimeModel designTimeModel,
         IModelRuntimeInitializer modelRuntimeInitializer)
     {
         _conventionSetBuilder = conventionSetBuilder;
-        _modelDependencies = modelDependencies;
         _designTimeModel = designTimeModel;
         _modelRuntimeInitializer = modelRuntimeInitializer;
     }
 
     public IRelationalModel CreateRelationalModelForTemporaryEntity<TEntity>() where TEntity : class
     {
-        var entityType = _designTimeModel.FindEntityType(typeof(TEntity));
+        var entityType = _designTimeModel.Model.FindEntityType(typeof(TEntity));
         if (ReferenceEquals(entityType, default)) throw new InvalidOperationException();
 
         var temporaryTableAnnotation = entityType.FindAnnotation("TemporaryTable");
@@ -39,7 +36,7 @@ internal sealed class TemporaryModelBuilderFactory : ITemporaryModelBuilderFacto
 
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
 
-        var modelBuilder = new ModelBuilder(conventionSet, _modelDependencies);
+        var modelBuilder = new ModelBuilder(conventionSet);
 
         configureTemporaryEntity(modelBuilder.Entity<TEntity>());
 
