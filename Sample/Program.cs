@@ -38,13 +38,18 @@ public static class Program
             City = "Severodvinsk",
             Street = "Torcheva",
             House = "2"
+        },
+        Religion = new Religion
+        {
+            Id = Guid.NewGuid(),
+            Title = "zavod"
         }
     };
 
     public static async Task Main()
     {
         await using var context = new AppDbContext();
-
+        
         await context.Database.BeginTransactionAsync();
 
         try
