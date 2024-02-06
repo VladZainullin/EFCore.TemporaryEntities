@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using EFCore.TemporaryTables.Extensions;
+﻿using EFCore.TemporaryTables.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Sample;
@@ -50,7 +49,7 @@ public static class Program
 
         try
         {
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 2; i++)
             {
                 var temporaryTable = await context.CreateTemporaryTableAsync<People>();
 
