@@ -41,9 +41,7 @@ internal sealed class TemporaryTableSqlGenerator
         var migrationOperations = _migrationsModelDiffer.GetDifferences(source, target);
         var migrationCommands = _migrationsSqlGenerator.Generate(migrationOperations);
 
-        var capacity = migrationCommands.Select(mc => mc.CommandText.Length).Sum();
-
-        var stringBuilder = new StringBuilder(capacity);
+        var stringBuilder = new StringBuilder();
 
         foreach (var migrationCommand in migrationCommands) stringBuilder.Append(migrationCommand.CommandText);
 
