@@ -1,4 +1,3 @@
-using EFCore.TemporaryTables.Interfaces;
 using EFCore.TemporaryTables.Services;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,9 +11,9 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
     public void ApplyServices(IServiceCollection services)
     {
         services
-            .AddScoped<ITemporaryModelBuilderFactory, TemporaryModelBuilderFactory>()
-            .AddScoped<ITemporaryTableSqlGenerator, TemporaryTableSqlGenerator>()
-            .AddScoped<TemporaryTableConfiguration>();
+            .AddScoped<TemporaryTableConfiguration>()
+            .AddScoped<TemporaryModelBuilderFactory>()
+            .AddScoped<TemporaryTableSqlGenerator>();
     }
 
     public void Validate(IDbContextOptions options)

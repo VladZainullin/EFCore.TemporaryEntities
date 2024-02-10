@@ -1,18 +1,17 @@
 using System.Text;
-using EFCore.TemporaryTables.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EFCore.TemporaryTables.Services;
 
-internal sealed class TemporaryTableSqlGenerator : ITemporaryTableSqlGenerator
+internal sealed class TemporaryTableSqlGenerator
 {
     private readonly IMigrationsModelDiffer _migrationsModelDiffer;
     private readonly IMigrationsSqlGenerator _migrationsSqlGenerator;
-    private readonly ITemporaryModelBuilderFactory _temporaryModelBuilderFactory;
+    private readonly TemporaryModelBuilderFactory _temporaryModelBuilderFactory;
 
     public TemporaryTableSqlGenerator(
-        ITemporaryModelBuilderFactory temporaryModelBuilderFactory,
+        TemporaryModelBuilderFactory temporaryModelBuilderFactory,
         IMigrationsModelDiffer migrationsModelDiffer,
         IMigrationsSqlGenerator migrationsSqlGenerator)
     {

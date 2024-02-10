@@ -1,4 +1,3 @@
-using EFCore.TemporaryTables.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -6,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 
 namespace EFCore.TemporaryTables.Services;
 
-internal sealed class TemporaryModelBuilderFactory : ITemporaryModelBuilderFactory
+internal sealed class TemporaryModelBuilderFactory
 {
     private readonly IConventionSetBuilder _conventionSetBuilder;
     private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
@@ -24,14 +23,10 @@ internal sealed class TemporaryModelBuilderFactory : ITemporaryModelBuilderFacto
 
     public IRelationalModel CreateRelationalModelForTemporaryEntity<TEntity>() where TEntity : class
     {
-        var configureTemporaryEntity = _temporaryTableConfiguration.Get<TEntity>();
-        if (ReferenceEquals(configureTemporaryEntity, default)) throw new InvalidOperationException();
-
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
-
         var modelBuilder = new ModelBuilder(conventionSet);
 
-        configureTemporaryEntity(modelBuilder.Entity<TEntity>());
+        _temporaryTableConfiguration.Configure<TEntity>(modelBuilder);
 
         var model = modelBuilder.Model;
         var finalizeModel = model.FinalizeModel();

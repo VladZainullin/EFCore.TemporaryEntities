@@ -17,7 +17,6 @@ public static class ModelBuilderExtensions
         temporaryTableConfiguration.Add(configure);
 
         configure(entityTypeBuilder);
-
         entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);
 
         return modelBuilder;

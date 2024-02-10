@@ -1,4 +1,4 @@
-using EFCore.TemporaryTables.Interfaces;
+using EFCore.TemporaryTables.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -11,7 +11,7 @@ public static class DbContextExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        var temporaryTableSqlGenerator = context.GetService<ITemporaryTableSqlGenerator>();
+        var temporaryTableSqlGenerator = context.GetService<TemporaryTableSqlGenerator>();
 
         var sql = temporaryTableSqlGenerator.CreateTableSql<TEntity>();
 
@@ -25,7 +25,7 @@ public static class DbContextExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        var temporaryTableSqlGenerator = context.GetService<ITemporaryTableSqlGenerator>();
+        var temporaryTableSqlGenerator = context.GetService<TemporaryTableSqlGenerator>();
 
         var sql = temporaryTableSqlGenerator.CreateTableSql<TEntity>();
 
@@ -39,7 +39,7 @@ public static class DbContextExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        var temporaryTableSqlGenerator = context.GetService<ITemporaryTableSqlGenerator>();
+        var temporaryTableSqlGenerator = context.GetService<TemporaryTableSqlGenerator>();
 
         var sql = temporaryTableSqlGenerator.DropTableSql<TEntity>();
 
@@ -51,7 +51,7 @@ public static class DbContextExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        var temporaryTableSqlGenerator = context.GetService<ITemporaryTableSqlGenerator>();
+        var temporaryTableSqlGenerator = context.GetService<TemporaryTableSqlGenerator>();
 
         var sql = temporaryTableSqlGenerator.DropTableSql<TEntity>();
 
