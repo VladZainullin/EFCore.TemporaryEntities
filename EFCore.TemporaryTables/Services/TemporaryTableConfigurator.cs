@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EFCore.TemporaryTables;
+namespace EFCore.TemporaryTables.Services;
 
-internal sealed class TemporaryTableConfiguration
+internal sealed class TemporaryTableConfigurator
 {
     private readonly Dictionary<Type, MulticastDelegate> _configurations = new();
 

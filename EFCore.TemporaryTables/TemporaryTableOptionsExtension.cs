@@ -11,7 +11,7 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
     public void ApplyServices(IServiceCollection services)
     {
         services
-            .AddScoped<TemporaryTableConfiguration>()
+            .AddScoped<TemporaryTableConfigurator>()
             .AddScoped<TemporaryModelBuilderFactory>()
             .AddScoped<TemporaryTableSqlGenerator>();
     }
@@ -24,14 +24,14 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
 
     private sealed class ExtensionInfo : DbContextOptionsExtensionInfo
     {
-        private readonly Lazy<string> _logFragment = new("using temporary tables");
+        private string? _logFragment;
 
         public ExtensionInfo(IDbContextOptionsExtension extension) : base(extension)
         {
         }
 
         public override bool IsDatabaseProvider => default;
-        public override string LogFragment => _logFragment.Value;
+        public override string LogFragment => _logFragment ??= "using temporary tables";
 
         public override int GetServiceProviderHashCode()
         {

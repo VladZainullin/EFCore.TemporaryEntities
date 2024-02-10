@@ -9,16 +9,16 @@ internal sealed class TemporaryModelBuilderFactory
 {
     private readonly IConventionSetBuilder _conventionSetBuilder;
     private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
-    private readonly TemporaryTableConfiguration _temporaryTableConfiguration;
+    private readonly TemporaryTableConfigurator _temporaryTableConfigurator;
 
     public TemporaryModelBuilderFactory(
         IConventionSetBuilder conventionSetBuilder,
         IModelRuntimeInitializer modelRuntimeInitializer,
-        TemporaryTableConfiguration temporaryTableConfiguration)
+        TemporaryTableConfigurator temporaryTableConfigurator)
     {
         _conventionSetBuilder = conventionSetBuilder;
         _modelRuntimeInitializer = modelRuntimeInitializer;
-        _temporaryTableConfiguration = temporaryTableConfiguration;
+        _temporaryTableConfigurator = temporaryTableConfigurator;
     }
 
     public IRelationalModel CreateRelationalModelForTemporaryEntity<TEntity>() where TEntity : class
@@ -26,7 +26,7 @@ internal sealed class TemporaryModelBuilderFactory
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
         var modelBuilder = new ModelBuilder(conventionSet);
 
-        _temporaryTableConfiguration.Configure<TEntity>(modelBuilder);
+        _temporaryTableConfigurator.Configure<TEntity>(modelBuilder);
 
         var model = modelBuilder.Model;
         var finalizeModel = model.FinalizeModel();

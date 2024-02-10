@@ -1,3 +1,4 @@
+using EFCore.TemporaryTables.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,7 +14,7 @@ public static class ModelBuilderExtensions
     {
         var entityTypeBuilder = modelBuilder.Entity<TEntity>();
 
-        var temporaryTableConfiguration = infrastructure.GetService<TemporaryTableConfiguration>();
+        var temporaryTableConfiguration = infrastructure.GetService<TemporaryTableConfigurator>();
         temporaryTableConfiguration.Add(configure);
 
         configure(entityTypeBuilder);
