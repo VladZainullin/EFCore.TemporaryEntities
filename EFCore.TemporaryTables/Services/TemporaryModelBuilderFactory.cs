@@ -2,7 +2,6 @@ using EFCore.TemporaryTables.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 
 namespace EFCore.TemporaryTables.Services;
@@ -10,28 +9,22 @@ namespace EFCore.TemporaryTables.Services;
 internal sealed class TemporaryModelBuilderFactory : ITemporaryModelBuilderFactory
 {
     private readonly IConventionSetBuilder _conventionSetBuilder;
-    private readonly IDesignTimeModel _designTimeModel;
     private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
+    private readonly TemporaryTableConfiguration _temporaryTableConfiguration;
 
     public TemporaryModelBuilderFactory(
         IConventionSetBuilder conventionSetBuilder,
-        IDesignTimeModel designTimeModel,
-        IModelRuntimeInitializer modelRuntimeInitializer)
+        IModelRuntimeInitializer modelRuntimeInitializer,
+        TemporaryTableConfiguration temporaryTableConfiguration)
     {
         _conventionSetBuilder = conventionSetBuilder;
-        _designTimeModel = designTimeModel;
         _modelRuntimeInitializer = modelRuntimeInitializer;
+        _temporaryTableConfiguration = temporaryTableConfiguration;
     }
 
     public IRelationalModel CreateRelationalModelForTemporaryEntity<TEntity>() where TEntity : class
     {
-        var entityType = _designTimeModel.Model.FindEntityType(typeof(TEntity));
-        if (ReferenceEquals(entityType, default)) throw new InvalidOperationException();
-
-        var temporaryTableAnnotation = entityType.FindAnnotation("TemporaryTable");
-        if (ReferenceEquals(temporaryTableAnnotation, default)) throw new InvalidOperationException();
-
-        var configureTemporaryEntity = temporaryTableAnnotation.Value as Action<EntityTypeBuilder<TEntity>>;
+        var configureTemporaryEntity = _temporaryTableConfiguration.Get<TEntity>();
         if (ReferenceEquals(configureTemporaryEntity, default)) throw new InvalidOperationException();
 
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
