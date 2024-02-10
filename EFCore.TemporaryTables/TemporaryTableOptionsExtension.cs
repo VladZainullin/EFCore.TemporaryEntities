@@ -1,5 +1,7 @@
-using EFCore.TemporaryTables.Services;
+using EFCore.TemporaryTables.Abstractions;
+using EFCore.TemporaryTables.Providers.Sqlite;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EFCore.TemporaryTables;
@@ -10,10 +12,19 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
 
     public void ApplyServices(IServiceCollection services)
     {
-        services
-            .AddScoped<TemporaryTableConfigurator>()
-            .AddScoped<TemporaryModelBuilderFactory>()
-            .AddScoped<TemporaryTableSqlGenerator>();
+        var databaseProvider = services.BuildServiceProvider().GetRequiredService<IDatabaseProvider>();
+
+        services.AddScoped<TemporaryTableConfigurator>();
+        
+        var name = databaseProvider.Name;
+        switch (name)
+        {
+            case "Microsoft.EntityFrameworkCore.Sqlite":
+                services
+                    .AddScoped<ICreateTemporaryTableOperation, SqliteCreateTemporaryTable>()
+                    .AddScoped<IDropTemporaryTableOperation, SqliteDropTemporaryTable>();
+                break;
+        }
     }
 
     public void Validate(IDbContextOptions options)

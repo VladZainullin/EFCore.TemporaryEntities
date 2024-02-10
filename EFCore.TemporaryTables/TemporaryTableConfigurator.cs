@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EFCore.TemporaryTables.Services;
+namespace EFCore.TemporaryTables;
 
 internal sealed class TemporaryTableConfigurator
 {

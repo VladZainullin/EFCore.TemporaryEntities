@@ -22,4 +22,8 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.15"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\EFCore.TemporaryTables.Abstractions\EFCore.TemporaryTables.Abstractions.csproj" />
+    </ItemGroup>
+
 </Project>

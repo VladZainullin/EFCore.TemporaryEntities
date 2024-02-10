@@ -1,4 +1,4 @@
-using EFCore.TemporaryTables.Services;
+using EFCore.TemporaryTables.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -11,25 +11,16 @@ public static class DbContextExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        var temporaryTableSqlGenerator = context.GetService<TemporaryTableSqlGenerator>();
-
-        var sql = temporaryTableSqlGenerator.CreateTableSql<TEntity>();
-
-        await context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+        await context.GetService<ICreateTemporaryTableOperation>().ExecuteAsync<TEntity>(cancellationToken);
 
         return context.Set<TEntity>();
     }
 
     public static DbSet<TEntity> CreateTemporaryTable<TEntity>(
-        this DbContext context,
-        CancellationToken cancellationToken = default)
+        this DbContext context)
         where TEntity : class
     {
-        var temporaryTableSqlGenerator = context.GetService<TemporaryTableSqlGenerator>();
-
-        var sql = temporaryTableSqlGenerator.CreateTableSql<TEntity>();
-
-        context.Database.ExecuteSqlRaw(sql, cancellationToken);
+        context.GetService<ICreateTemporaryTableOperation>().Execute<TEntity>();
 
         return context.Set<TEntity>();
     }
@@ -39,22 +30,13 @@ public static class DbContextExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        var temporaryTableSqlGenerator = context.GetService<TemporaryTableSqlGenerator>();
-
-        var sql = temporaryTableSqlGenerator.DropTableSql<TEntity>();
-
-        return context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
+        return context.GetService<IDropTemporaryTableOperation>().ExecuteAsync<TEntity>(cancellationToken);
     }
 
     public static void DropTemporaryTable<TEntity>(
-        this DbContext context,
-        CancellationToken cancellationToken = default)
+        this DbContext context)
         where TEntity : class
     {
-        var temporaryTableSqlGenerator = context.GetService<TemporaryTableSqlGenerator>();
-
-        var sql = temporaryTableSqlGenerator.DropTableSql<TEntity>();
-
-        context.Database.ExecuteSqlRaw(sql, cancellationToken);
+        context.GetService<IDropTemporaryTableOperation>().Execute<TEntity>();
     }
 }
