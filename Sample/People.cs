@@ -2,7 +2,7 @@ namespace Sample;
 
 public sealed class People
 {
-    public required int Id { get; init; }
+    public required Guid Id { get; init; }
 
     public required Identification Identification { get; init; }
 

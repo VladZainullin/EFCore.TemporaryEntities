@@ -7,7 +7,7 @@ public static class Program
 {
     private static People People => new()
     {
-        Id = 1,
+        Id = Guid.NewGuid(),
         Identification = new Identification
         {
             Name = "Vlad",
