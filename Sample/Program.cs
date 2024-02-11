@@ -7,7 +7,7 @@ public static class Program
 {
     private static People People => new()
     {
-        Id = Guid.NewGuid(),
+        Id = 1,
         Identification = new Identification
         {
             Name = "Vlad",
@@ -39,12 +39,8 @@ public static class Program
             Street = "Torcheva",
             House = "2"
         },
-        Religion = new Religion
-        {
-            Id = Guid.NewGuid(),
-            Title = "zavod"
-        }
     };
+    
 
     public static async Task Main()
     {

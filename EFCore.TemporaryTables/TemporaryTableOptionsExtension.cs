@@ -1,4 +1,5 @@
 using EFCore.TemporaryTables.Abstractions;
+using EFCore.TemporaryTables.Providers.PostgreSql;
 using EFCore.TemporaryTables.Providers.Sqlite;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -23,6 +24,11 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
                 services
                     .AddScoped<ICreateTemporaryTableOperation, SqliteCreateTemporaryTable>()
                     .AddScoped<IDropTemporaryTableOperation, SqliteDropTemporaryTable>();
+                break;
+            case "Npgsql.EntityFrameworkCore.PostgreSQL":
+                services
+                    .AddScoped<ICreateTemporaryTableOperation, NpgsqlCreateTemporaryTable>()
+                    .AddScoped<IDropTemporaryTableOperation, NpgsqlDropTemporaryTable>();
                 break;
         }
     }

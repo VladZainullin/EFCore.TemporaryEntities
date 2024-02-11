@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EFCore.TemporaryTables.Providers.Sqlite;
+namespace EFCore.TemporaryTables.Providers.PostgreSql;
 
-internal sealed class SqliteDropTemporaryTable : IDropTemporaryTableOperation
+internal sealed class NpgsqlDropTemporaryTable : IDropTemporaryTableOperation
 {
     private readonly IConventionSetBuilder _conventionSetBuilder;
     private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
@@ -16,7 +16,7 @@ internal sealed class SqliteDropTemporaryTable : IDropTemporaryTableOperation
     private readonly IMigrationsSqlGenerator _migrationsSqlGenerator;
     private readonly ICurrentDbContext _currentDbContext;
 
-    public SqliteDropTemporaryTable(
+    public NpgsqlDropTemporaryTable(
         IConventionSetBuilder conventionSetBuilder,
         IModelRuntimeInitializer modelRuntimeInitializer,
         TemporaryTableConfigurator temporaryTableConfigurator,
@@ -67,6 +67,15 @@ internal sealed class SqliteDropTemporaryTable : IDropTemporaryTableOperation
         _temporaryTableConfigurator.Configure<TEntity>(modelBuilder);
 
         var model = modelBuilder.Model;
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (entityType.IsOwned()) continue;
+
+            if (entityType.ClrType == typeof(TEntity)) continue;
+
+            entityType.SetIsTableExcludedFromMigrations(true);
+        }
         
         var finalizeModel = model.FinalizeModel();
 

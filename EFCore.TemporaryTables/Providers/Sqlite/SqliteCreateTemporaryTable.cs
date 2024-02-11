@@ -42,10 +42,11 @@ internal sealed class SqliteCreateTemporaryTable :
         _temporaryTableConfigurator.Configure<TEntity>(modelBuilder);
 
         var model = modelBuilder.Model;
+        
         var finalizeModel = model.FinalizeModel();
 
         _modelRuntimeInitializer.Initialize(finalizeModel);
-
+        
         var relationalFinalizeModel = finalizeModel.GetRelationalModel();
         
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
@@ -71,10 +72,20 @@ internal sealed class SqliteCreateTemporaryTable :
         _temporaryTableConfigurator.Configure<TEntity>(modelBuilder);
 
         var model = modelBuilder.Model;
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (entityType.IsOwned()) continue;
+
+            if (entityType.ClrType == typeof(TEntity)) continue;
+
+            entityType.SetIsTableExcludedFromMigrations(true);
+        }
+        
         var finalizeModel = model.FinalizeModel();
 
         _modelRuntimeInitializer.Initialize(finalizeModel);
-
+        
         var relationalFinalizeModel = finalizeModel.GetRelationalModel();
         
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
