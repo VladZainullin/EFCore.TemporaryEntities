@@ -38,37 +38,29 @@ public static class Program
             City = "Severodvinsk",
             Street = "Torcheva",
             House = "2"
-        },
+        }
     };
-    
+
 
     public static async Task Main()
     {
         await using var context = new AppDbContext();
-        
-        await context.Database.BeginTransactionAsync();
 
-        try
+        //await context.Database.BeginTransactionAsync();
+
+        for (var i = 0; i < 2; i++)
         {
-            for (var i = 0; i < 2; i++)
-            {
-                var temporaryTable = await context.CreateTemporaryTableAsync<People>();
+            var temporaryTable = await context.CreateTemporaryTableAsync<People>();
 
-                temporaryTable.Add(People);
+            temporaryTable.Add(People);
 
-                await context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
-                var peoples = await temporaryTable
-                    .AsNoTracking()
-                    .ToListAsync();
-                
-                await context.DropTemporaryTableAsync<People>();
-            }
-        }
-        catch
-        {
-            await context.Database.RollbackTransactionAsync();
-            throw;
+            var peoples = await temporaryTable
+                .AsNoTracking()
+                .ToListAsync();
+
+            await context.DropTemporaryTableAsync<People>();
         }
     }
 }

@@ -1,4 +1,5 @@
 using EFCore.TemporaryTables.Abstractions;
+using EFCore.TemporaryTables.Providers.InMemory;
 using EFCore.TemporaryTables.Providers.PostgreSql;
 using EFCore.TemporaryTables.Providers.Sqlite;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -16,7 +17,7 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
         var databaseProvider = services.BuildServiceProvider().GetRequiredService<IDatabaseProvider>();
 
         services.AddScoped<TemporaryTableConfigurator>();
-        
+
         var name = databaseProvider.Name;
         switch (name)
         {
@@ -29,6 +30,11 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
                 services
                     .AddScoped<ICreateTemporaryTableOperation, NpgsqlCreateTemporaryTable>()
                     .AddScoped<IDropTemporaryTableOperation, NpgsqlDropTemporaryTable>();
+                break;
+            case "Microsoft.EntityFrameworkCore.InMemory":
+                services
+                    .AddScoped<ICreateTemporaryTableOperation, InMemoryCreateTemporaryTable>()
+                    .AddScoped<IDropTemporaryTableOperation, InMemoryDropTemporaryTable>();
                 break;
         }
     }
