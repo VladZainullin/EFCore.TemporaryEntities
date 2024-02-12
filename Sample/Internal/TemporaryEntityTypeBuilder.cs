@@ -36,7 +36,7 @@ public sealed class TemporaryEntityTypeBuilder : EntityTypeBuilder
 
     public override EntityTypeBuilder Ignore(string propertyName)
     {
-        return _entityTypeBuilder.Ignore(propertyName);
+        return new TemporaryEntityTypeBuilder(_entityTypeBuilder.Ignore(propertyName));
     }
 
     public override PropertyBuilder Property(Type propertyType, string propertyName)
@@ -56,17 +56,17 @@ public sealed class TemporaryEntityTypeBuilder : EntityTypeBuilder
 
     public override EntityTypeBuilder HasAnnotation(string annotation, object? value)
     {
-        return _entityTypeBuilder.HasAnnotation(annotation, value);
+        return new TemporaryEntityTypeBuilder(_entityTypeBuilder.HasAnnotation(annotation, value));
     }
 
     public override EntityTypeBuilder HasChangeTrackingStrategy(ChangeTrackingStrategy changeTrackingStrategy)
     {
-        return _entityTypeBuilder.HasChangeTrackingStrategy(changeTrackingStrategy);
+        return new TemporaryEntityTypeBuilder(_entityTypeBuilder.HasChangeTrackingStrategy(changeTrackingStrategy));
     }
 
     public override EntityTypeBuilder UsePropertyAccessMode(PropertyAccessMode propertyAccessMode)
     {
-        return _entityTypeBuilder.UsePropertyAccessMode(propertyAccessMode);
+        return new TemporaryEntityTypeBuilder(_entityTypeBuilder.UsePropertyAccessMode(propertyAccessMode));
     }
 
     public override NavigationBuilder Navigation(string navigationName)
@@ -297,27 +297,27 @@ public sealed class TemporaryEntityTypeBuilder<TEntity> : EntityTypeBuilder<TEnt
 
     public override PropertyBuilder<TProperty> Property<TProperty>(string propertyName)
     {
-        return _entityTypeBuilder.Property<TProperty>(propertyName);
+        return new TemporaryPropertyBuilder<TProperty>(_entityTypeBuilder.Property<TProperty>(propertyName));
     }
 
     public override EntityTypeBuilder<TEntity> HasAnnotation(string annotation, object? value)
     {
-        return _entityTypeBuilder.HasAnnotation(annotation, value);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.HasAnnotation(annotation, value));
     }
 
     public override EntityTypeBuilder<TEntity> HasChangeTrackingStrategy(ChangeTrackingStrategy changeTrackingStrategy)
     {
-        return _entityTypeBuilder.HasChangeTrackingStrategy(changeTrackingStrategy);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.HasChangeTrackingStrategy(changeTrackingStrategy));
     }
 
     public override EntityTypeBuilder<TEntity> UsePropertyAccessMode(PropertyAccessMode propertyAccessMode)
     {
-        return _entityTypeBuilder.UsePropertyAccessMode(propertyAccessMode);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.UsePropertyAccessMode(propertyAccessMode));
     }
 
     public override NavigationBuilder Navigation(string navigationName)
     {
-        return _entityTypeBuilder.Navigation(navigationName);
+        return new TemporaryNavigationBuilder(_entityTypeBuilder.Navigation(navigationName));
     }
 
     public override DiscriminatorBuilder HasDiscriminator()
@@ -367,12 +367,12 @@ public sealed class TemporaryEntityTypeBuilder<TEntity> : EntityTypeBuilder<TEnt
 
     public override PropertyBuilder IndexerProperty(Type propertyType, string propertyName)
     {
-        return _entityTypeBuilder.IndexerProperty(propertyType, propertyName);
+        return new TemporaryPropertyBuilder(_entityTypeBuilder.IndexerProperty(propertyType, propertyName));
     }
 
     public override PropertyBuilder<TProperty> IndexerProperty<TProperty>(string propertyName)
     {
-        return _entityTypeBuilder.IndexerProperty<TProperty>(propertyName);
+        return new TemporaryPropertyBuilder<TProperty>(_entityTypeBuilder.IndexerProperty<TProperty>(propertyName));
     }
 
     public override OwnedNavigationBuilder OwnsMany(string ownedTypeName, string navigationName)
@@ -407,77 +407,77 @@ public sealed class TemporaryEntityTypeBuilder<TEntity> : EntityTypeBuilder<TEnt
 
     public override EntityTypeBuilder<TEntity> HasBaseType(Type? entityType)
     {
-        return _entityTypeBuilder.HasBaseType(entityType);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.HasBaseType(entityType));
     }
 
     public override EntityTypeBuilder<TEntity> HasBaseType(string? name)
     {
-        return _entityTypeBuilder.HasBaseType(name);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.HasBaseType(name));
     }
 
     public override EntityTypeBuilder<TEntity> HasNoDiscriminator()
     {
-        return _entityTypeBuilder.HasNoDiscriminator();
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.HasNoDiscriminator());
     }
 
     public override EntityTypeBuilder<TEntity> HasNoKey()
     {
-        return _entityTypeBuilder.HasNoKey();
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.HasNoKey());
     }
 
     public override EntityTypeBuilder<TEntity> HasQueryFilter(LambdaExpression? filter)
     {
-        return _entityTypeBuilder.HasQueryFilter(filter);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.HasQueryFilter(filter));
     }
 
     public override PropertyBuilder<TProperty> Property<TProperty>(
         Expression<Func<TEntity, TProperty>> propertyExpression)
     {
-        return _entityTypeBuilder.Property(propertyExpression);
+        return new TemporaryPropertyBuilder<TProperty>(_entityTypeBuilder.Property(propertyExpression));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsMany<TRelatedEntity>(string ownedTypeName,
         Expression<Func<TEntity, IEnumerable<TRelatedEntity>?>> navigationExpression,
         Action<OwnedNavigationBuilder<TEntity, TRelatedEntity>> buildAction)
     {
-        return _entityTypeBuilder.OwnsMany(ownedTypeName, navigationExpression, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsMany(ownedTypeName, navigationExpression, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsMany<TRelatedEntity>(
         Expression<Func<TEntity, IEnumerable<TRelatedEntity>?>> navigationExpression,
         Action<OwnedNavigationBuilder<TEntity, TRelatedEntity>> buildAction)
     {
-        return _entityTypeBuilder.OwnsMany(navigationExpression, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsMany(navigationExpression, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsMany(string ownedTypeName, string navigationName,
         Action<OwnedNavigationBuilder> buildAction)
     {
-        return _entityTypeBuilder.OwnsMany(ownedTypeName, navigationName, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsMany(ownedTypeName, navigationName, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsMany(Type ownedType, string navigationName,
         Action<OwnedNavigationBuilder> buildAction)
     {
-        return _entityTypeBuilder.OwnsMany(ownedType, navigationName, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsMany(ownedType, navigationName, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsMany<TRelatedEntity>(string ownedTypeName, string navigationName,
         Action<OwnedNavigationBuilder<TEntity, TRelatedEntity>> buildAction)
     {
-        return _entityTypeBuilder.OwnsMany(ownedTypeName, navigationName, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsMany(ownedTypeName, navigationName, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsMany(string ownedTypeName, Type ownedType, string navigationName,
         Action<OwnedNavigationBuilder> buildAction)
     {
-        return _entityTypeBuilder.OwnsMany(ownedTypeName, ownedType, navigationName, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsMany(ownedTypeName, ownedType, navigationName, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsMany<TRelatedEntity>(string navigationName,
         Action<OwnedNavigationBuilder<TEntity, TRelatedEntity>> buildAction)
     {
-        return _entityTypeBuilder.OwnsMany(navigationName, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsMany(navigationName, buildAction));
     }
 
     public override OwnedNavigationBuilder<TEntity, TRelatedEntity> OwnsMany<TRelatedEntity>(string ownedTypeName,
@@ -506,45 +506,45 @@ public sealed class TemporaryEntityTypeBuilder<TEntity> : EntityTypeBuilder<TEnt
     public override EntityTypeBuilder<TEntity> OwnsOne(Type ownedType, string navigationName,
         Action<OwnedNavigationBuilder> buildAction)
     {
-        return _entityTypeBuilder.OwnsOne(ownedType, navigationName, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsOne(ownedType, navigationName, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsOne(string ownedTypeName, string navigationName,
         Action<OwnedNavigationBuilder> buildAction)
     {
-        return _entityTypeBuilder.OwnsOne(ownedTypeName, navigationName, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsOne(ownedTypeName, navigationName, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsOne<TRelatedEntity>(string navigationName,
         Action<OwnedNavigationBuilder<TEntity, TRelatedEntity>> buildAction)
     {
-        return _entityTypeBuilder.OwnsOne(navigationName, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsOne(navigationName, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsOne<TRelatedEntity>(string ownedTypeName, string navigationName,
         Action<OwnedNavigationBuilder<TEntity, TRelatedEntity>> buildAction)
     {
-        return _entityTypeBuilder.OwnsOne(ownedTypeName, navigationName, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsOne(ownedTypeName, navigationName, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsOne<TRelatedEntity>(
         Expression<Func<TEntity, TRelatedEntity?>> navigationExpression,
         Action<OwnedNavigationBuilder<TEntity, TRelatedEntity>> buildAction) where TRelatedEntity : class
     {
-        return _entityTypeBuilder.OwnsOne(navigationExpression, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsOne(navigationExpression, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsOne<TRelatedEntity>(string ownedTypeName,
         Expression<Func<TEntity, TRelatedEntity?>> navigationExpression,
         Action<OwnedNavigationBuilder<TEntity, TRelatedEntity>> buildAction) where TRelatedEntity : class
     {
-        return _entityTypeBuilder.OwnsOne(ownedTypeName, navigationExpression, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsOne(ownedTypeName, navigationExpression, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> OwnsOne(string ownedTypeName, Type ownedType, string navigationName,
         Action<OwnedNavigationBuilder> buildAction)
     {
-        return _entityTypeBuilder.OwnsOne(ownedTypeName, ownedType, navigationName, buildAction);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.OwnsOne(ownedTypeName, ownedType, navigationName, buildAction));
     }
 
     public override OwnedNavigationBuilder<TEntity, TRelatedEntity> OwnsOne<TRelatedEntity>(string ownedTypeName,
@@ -572,7 +572,7 @@ public sealed class TemporaryEntityTypeBuilder<TEntity> : EntityTypeBuilder<TEnt
 
     public override EntityTypeBuilder<TEntity> Ignore(Expression<Func<TEntity, object?>> propertyExpression)
     {
-        return _entityTypeBuilder.Ignore(propertyExpression);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.Ignore(propertyExpression));
     }
 
     public override DiscriminatorBuilder<TDiscriminator> HasDiscriminator<TDiscriminator>(
@@ -605,83 +605,83 @@ public sealed class TemporaryEntityTypeBuilder<TEntity> : EntityTypeBuilder<TEnt
 
     public override DataBuilder<TEntity> HasData(params object[] data)
     {
-        return _entityTypeBuilder.HasData(data);
+        return new TemporaryDataBuilder<TEntity>(_entityTypeBuilder.HasData(data));
     }
 
     public override DataBuilder<TEntity> HasData(IEnumerable<TEntity> data)
     {
-        return _entityTypeBuilder.HasData(data);
+        return new TemporaryDataBuilder<TEntity>(_entityTypeBuilder.HasData(data));
     }
 
     public override DataBuilder<TEntity> HasData(params TEntity[] data)
     {
-        return _entityTypeBuilder.HasData(data);
+        return new TemporaryDataBuilder<TEntity>(_entityTypeBuilder.HasData(data));
     }
 
     public override DataBuilder<TEntity> HasData(IEnumerable<object> data)
     {
-        return _entityTypeBuilder.HasData(data);
+        return new TemporaryDataBuilder<TEntity>(_entityTypeBuilder.HasData(data));
     }
 
     public override IndexBuilder<TEntity> HasIndex(Expression<Func<TEntity, object?>> indexExpression)
     {
-        return _entityTypeBuilder.HasIndex(indexExpression);
+        return new TemporaryIndexBuilder<TEntity>(_entityTypeBuilder.HasIndex(indexExpression));
     }
 
     public override IndexBuilder<TEntity> HasIndex(Expression<Func<TEntity, object?>> indexExpression, string name)
     {
-        return _entityTypeBuilder.HasIndex(indexExpression, name);
+        return new TemporaryIndexBuilder<TEntity>(_entityTypeBuilder.HasIndex(indexExpression, name));
     }
 
     public override IndexBuilder<TEntity> HasIndex(params string[] propertyNames)
     {
-        return _entityTypeBuilder.HasIndex(propertyNames);
+        return new TemporaryIndexBuilder<TEntity>(_entityTypeBuilder.HasIndex(propertyNames));
     }
 
     public override IndexBuilder<TEntity> HasIndex(string[] propertyNames, string name)
     {
-        return _entityTypeBuilder.HasIndex(propertyNames, name);
+        return new TemporaryIndexBuilder<TEntity>(_entityTypeBuilder.HasIndex(propertyNames, name));
     }
 
     public override EntityTypeBuilder<TEntity> HasBaseType<TBaseType>()
     {
-        return _entityTypeBuilder.HasBaseType<TBaseType>();
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.HasBaseType<TBaseType>());
     }
 
     public override NavigationBuilder<TEntity, TNavigation> Navigation<TNavigation>(
         Expression<Func<TEntity, TNavigation?>> navigationExpression) where TNavigation : class
     {
-        return _entityTypeBuilder.Navigation(navigationExpression);
+        return new TemporaryNavigationBuilder<TEntity, TNavigation>(_entityTypeBuilder.Navigation(navigationExpression));
     }
 
     public override NavigationBuilder<TEntity, TNavigation> Navigation<TNavigation>(
         Expression<Func<TEntity, IEnumerable<TNavigation>?>> navigationExpression)
     {
-        return _entityTypeBuilder.Navigation(navigationExpression);
+        return new TemporaryNavigationBuilder<TEntity, TNavigation>(_entityTypeBuilder.Navigation(navigationExpression));
     }
 
     public override KeyBuilder HasKey(Expression<Func<TEntity, object?>> keyExpression)
     {
-        return _entityTypeBuilder.HasKey(keyExpression);
+        return new TemporaryKeyBuilder(_entityTypeBuilder.HasKey(keyExpression));
     }
 
     public override KeyBuilder<TEntity> HasKey(params string[] propertyNames)
     {
-        return _entityTypeBuilder.HasKey(propertyNames);
+        return new TemporaryKeyBuilder<TEntity>(_entityTypeBuilder.HasKey(propertyNames));
     }
 
     public override KeyBuilder<TEntity> HasAlternateKey(params string[] propertyNames)
     {
-        return _entityTypeBuilder.HasAlternateKey(propertyNames);
+        return new TemporaryKeyBuilder<TEntity>(_entityTypeBuilder.HasAlternateKey(propertyNames));
     }
 
     public override KeyBuilder<TEntity> HasAlternateKey(Expression<Func<TEntity, object?>> keyExpression)
     {
-        return _entityTypeBuilder.HasAlternateKey(keyExpression);
+        return new TemporaryKeyBuilder<TEntity>(_entityTypeBuilder.HasAlternateKey(keyExpression));
     }
 
     public override EntityTypeBuilder<TEntity> HasQueryFilter(Expression<Func<TEntity, bool>>? filter)
     {
-        return _entityTypeBuilder.HasQueryFilter(filter);
+        return new TemporaryEntityTypeBuilder<TEntity>(_entityTypeBuilder.HasQueryFilter(filter));
     }
 }
