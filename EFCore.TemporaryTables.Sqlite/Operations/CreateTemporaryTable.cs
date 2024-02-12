@@ -1,13 +1,15 @@
 using System.Text;
 using EFCore.TemporaryTables.Abstractions;
+using EFCore.TemporaryTables.Sqlite.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EFCore.TemporaryTables.Sqlite;
+namespace EFCore.TemporaryTables.Sqlite.Operations;
 
-internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
+internal sealed class CreateTemporaryTable :
+    ICreateTemporaryTableOperation
 {
     private readonly IConfigureTemporaryTable _addTemporaryEntityConfiguration;
     private readonly IConventionSetBuilder _conventionSetBuilder;
@@ -16,7 +18,7 @@ internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
     private readonly IMigrationsSqlGenerator _migrationsSqlGenerator;
     private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
 
-    public DropTemporaryTable(
+    public CreateTemporaryTable(
         IConventionSetBuilder conventionSetBuilder,
         IModelRuntimeInitializer modelRuntimeInitializer,
         IConfigureTemporaryTable addTemporaryEntityConfiguration,
@@ -32,7 +34,8 @@ internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
         _currentDbContext = currentDbContext;
     }
 
-    public Task ExecuteAsync<TEntity>(CancellationToken cancellationToken = default) where TEntity : class
+    public Task ExecuteAsync<TEntity>(CancellationToken cancellationToken = default)
+        where TEntity : class
     {
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
         var modelBuilder = new ModelBuilder(conventionSet);
@@ -48,18 +51,21 @@ internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
         var relationalFinalizeModel = finalizeModel.GetRelationalModel();
 
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
-            relationalFinalizeModel,
-            default);
+            default,
+            relationalFinalizeModel);
         var migrationCommands = _migrationsSqlGenerator.Generate(migrationOperations);
 
         var stringBuilder = new StringBuilder();
 
         foreach (var migrationCommand in migrationCommands) stringBuilder.Append(migrationCommand.CommandText);
+
+        stringBuilder.Replace("CREATE TABLE", "CREATE TEMPORARY TABLE IF NOT EXISTS");
 
         return _currentDbContext.Context.Database.ExecuteSqlRawAsync(stringBuilder.ToString(), cancellationToken);
     }
 
-    public void Execute<TEntity>() where TEntity : class
+    public void Execute<TEntity>()
+        where TEntity : class
     {
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
         var modelBuilder = new ModelBuilder(conventionSet);
@@ -68,6 +74,15 @@ internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
 
         var model = modelBuilder.Model;
 
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (entityType.IsOwned()) continue;
+
+            if (entityType.ClrType == typeof(TEntity)) continue;
+
+            entityType.SetIsTableExcludedFromMigrations(true);
+        }
+
         var finalizeModel = model.FinalizeModel();
 
         _modelRuntimeInitializer.Initialize(finalizeModel);
@@ -75,13 +90,15 @@ internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
         var relationalFinalizeModel = finalizeModel.GetRelationalModel();
 
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
-            relationalFinalizeModel,
-            default);
+            default,
+            relationalFinalizeModel);
         var migrationCommands = _migrationsSqlGenerator.Generate(migrationOperations);
 
         var stringBuilder = new StringBuilder();
 
         foreach (var migrationCommand in migrationCommands) stringBuilder.Append(migrationCommand.CommandText);
+
+        stringBuilder.Replace("CREATE TABLE", "CREATE TEMPORARY TABLE");
 
         _currentDbContext.Context.Database.ExecuteSqlRaw(stringBuilder.ToString());
     }

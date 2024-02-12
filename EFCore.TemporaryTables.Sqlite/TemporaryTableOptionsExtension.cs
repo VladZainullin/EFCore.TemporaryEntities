@@ -1,4 +1,6 @@
 using EFCore.TemporaryTables.Abstractions;
+using EFCore.TemporaryTables.Sqlite.Abstractions;
+using EFCore.TemporaryTables.Sqlite.Operations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 

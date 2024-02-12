@@ -1,4 +1,5 @@
 using EFCore.TemporaryTables.Abstractions;
+using EFCore.TemporaryTables.Sqlite.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

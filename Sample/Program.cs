@@ -52,7 +52,7 @@ public static class Program
         {
             for (var i = 0; i < 2; i++)
             {
-                var temporaryTable = await context.CreateTemporaryTableAsync<People>();
+                var temporaryTable = context.CreateTemporaryTable<People>();
 
                 temporaryTable.Add(People);
 
@@ -62,7 +62,7 @@ public static class Program
                     .AsNoTracking()
                     .ToListAsync();
 
-                await context.DropTemporaryTableAsync<People>();
+                context.DropTemporaryTable<People>();
             }
         }
         catch

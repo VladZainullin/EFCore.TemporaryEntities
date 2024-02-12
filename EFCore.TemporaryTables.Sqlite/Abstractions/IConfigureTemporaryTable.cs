@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace EFCore.TemporaryTables.Sqlite;
+namespace EFCore.TemporaryTables.Sqlite.Abstractions;
 
 public interface IConfigureTemporaryTable
 {
