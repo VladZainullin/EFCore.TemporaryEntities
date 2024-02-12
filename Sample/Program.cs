@@ -46,21 +46,29 @@ public static class Program
     {
         await using var context = new AppDbContext();
 
-        //await context.Database.BeginTransactionAsync();
+        await context.Database.BeginTransactionAsync();
 
-        for (var i = 0; i < 2; i++)
+        try
         {
-            var temporaryTable = await context.CreateTemporaryTableAsync<People>();
+            for (var i = 0; i < 2; i++)
+            {
+                var temporaryTable = await context.CreateTemporaryTableAsync<People>();
 
-            temporaryTable.Add(People);
+                temporaryTable.Add(People);
 
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
 
-            var peoples = await temporaryTable
-                .AsNoTracking()
-                .ToListAsync();
+                var peoples = await temporaryTable
+                    .AsNoTracking()
+                    .ToListAsync();
 
-            await context.DropTemporaryTableAsync<People>();
+                await context.DropTemporaryTableAsync<People>();
+            }
+        }
+        catch
+        {
+            await context.Database.RollbackTransactionAsync();
+            throw;
         }
     }
 }

@@ -1,18 +1,20 @@
 using EFCore.TemporaryTables.Abstractions;
+using EFCore.TemporaryTables.PostgreSQL.Abstractions;
+using EFCore.TemporaryTables.PostgreSQL.Operations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EFCore.TemporaryTables.Sqlite;
+namespace EFCore.TemporaryTables.PostgreSQL;
 
-internal sealed class SqliteTemporaryTableOptionsExtension : IDbContextOptionsExtension
+internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtension
 {
     public void ApplyServices(IServiceCollection services)
     {
-        services.AddScoped<SqliteTemporaryTablesConfigurator>();
-        services.AddScoped<IAddTemporaryTableConfiguration>(s => s.GetRequiredService<SqliteTemporaryTablesConfigurator>());
-        services.AddScoped<IConfigureTemporaryTable>(s => s.GetRequiredService<SqliteTemporaryTablesConfigurator>());
-        services.AddScoped<ICreateTemporaryTableOperation, SqliteCreateTemporaryTable>();
-        services.AddScoped<IDropTemporaryTableOperation, SqliteDropTemporaryTable>();
+        services.AddScoped<TemporaryTablesConfigurator>();
+        services.AddScoped<IAddTemporaryTableConfiguration>(s => s.GetRequiredService<TemporaryTablesConfigurator>());
+        services.AddScoped<IConfigureTemporaryTable>(s => s.GetRequiredService<TemporaryTablesConfigurator>());
+        services.AddScoped<ICreateTemporaryTableOperation, CreateTemporaryTable>();
+        services.AddScoped<IDropTemporaryTableOperation, DropTemporaryTable>();
     }
 
     public void Validate(IDbContextOptions options)
