@@ -76,12 +76,12 @@ public sealed class TemporaryEntityTypeBuilder : EntityTypeBuilder
 
     public override DataBuilder HasData(IEnumerable<object> data)
     {
-        return _entityTypeBuilder.HasData(data);
+        return new TemporaryDataBuilder(_entityTypeBuilder.HasData(data));
     }
 
     public override DataBuilder HasData(params object[] data)
     {
-        return _entityTypeBuilder.HasData(data);
+        return new TemporaryDataBuilder(_entityTypeBuilder.HasData(data));
     }
 
     public override DiscriminatorBuilder HasDiscriminator()
@@ -101,17 +101,17 @@ public sealed class TemporaryEntityTypeBuilder : EntityTypeBuilder
 
     public override IndexBuilder HasIndex(string[] propertyNames, string name)
     {
-        return _entityTypeBuilder.HasIndex(propertyNames, name);
+        return new TemporaryIndexBuilder(_entityTypeBuilder.HasIndex(propertyNames, name));
     }
 
     public override IndexBuilder HasIndex(params string[] propertyNames)
     {
-        return _entityTypeBuilder.HasIndex(propertyNames);
+        return new TemporaryIndexBuilder(_entityTypeBuilder.HasIndex(propertyNames));
     }
 
     public override KeyBuilder HasKey(params string[] propertyNames)
     {
-        return _entityTypeBuilder.HasKey(propertyNames);
+        return new TemporaryKeyBuilder(_entityTypeBuilder.HasKey(propertyNames));
     }
 
     public override CollectionNavigationBuilder HasMany(string navigationName)
@@ -146,12 +146,12 @@ public sealed class TemporaryEntityTypeBuilder : EntityTypeBuilder
 
     public override PropertyBuilder IndexerProperty(Type propertyType, string propertyName)
     {
-        return _entityTypeBuilder.IndexerProperty(propertyType, propertyName);
+        return new TemporaryPropertyBuilder(_entityTypeBuilder.IndexerProperty(propertyType, propertyName));
     }
 
     public override PropertyBuilder<TProperty> IndexerProperty<TProperty>(string propertyName)
     {
-        return _entityTypeBuilder.IndexerProperty<TProperty>(propertyName);
+        return new TemporaryPropertyBuilder<TProperty>(_entityTypeBuilder.IndexerProperty<TProperty>(propertyName));
     }
 
     public override EntityTypeBuilder OwnsMany(string ownedTypeName, Type ownedType, string navigationName,
