@@ -61,12 +61,12 @@ public sealed class TemporaryModelBuilder : ModelBuilder
 
     public override OwnedEntityTypeBuilder Owned(Type type)
     {
-        return _modelBuilder.Owned(type);
+        return new TemporaryOwnedEntityTypeBuilder(_modelBuilder.Owned(type));
     }
 
     public override OwnedEntityTypeBuilder<T> Owned<T>()
     {
-        return _modelBuilder.Owned<T>();
+        return new TemporaryOwnedEntityTypeBuilder<T>(_modelBuilder.Owned<T>());
     }
 
     public override bool Equals(object? obj)

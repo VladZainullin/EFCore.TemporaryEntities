@@ -41,17 +41,17 @@ public sealed class TemporaryEntityTypeBuilder : EntityTypeBuilder
 
     public override PropertyBuilder Property(Type propertyType, string propertyName)
     {
-        return _entityTypeBuilder.Property(propertyType, propertyName);
+        return new TemporaryPropertyBuilder(_entityTypeBuilder.Property(propertyType, propertyName));
     }
 
     public override PropertyBuilder Property(string propertyName)
     {
-        return _entityTypeBuilder.Property(propertyName);
+        return new TemporaryPropertyBuilder(_entityTypeBuilder.Property(propertyName));
     }
 
     public override PropertyBuilder<TProperty> Property<TProperty>(string propertyName)
     {
-        return _entityTypeBuilder.Property<TProperty>(propertyName);
+        return new TemporaryPropertyBuilder<TProperty>(_entityTypeBuilder.Property<TProperty>(propertyName));
     }
 
     public override EntityTypeBuilder HasAnnotation(string annotation, object? value)
@@ -71,7 +71,7 @@ public sealed class TemporaryEntityTypeBuilder : EntityTypeBuilder
 
     public override NavigationBuilder Navigation(string navigationName)
     {
-        return _entityTypeBuilder.Navigation(navigationName);
+        return new TemporaryNavigationBuilder(_entityTypeBuilder.Navigation(navigationName));
     }
 
     public override DataBuilder HasData(IEnumerable<object> data)
