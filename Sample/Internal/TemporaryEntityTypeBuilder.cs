@@ -322,12 +322,12 @@ public sealed class TemporaryEntityTypeBuilder<TEntity> : EntityTypeBuilder<TEnt
 
     public override DiscriminatorBuilder HasDiscriminator()
     {
-        return _entityTypeBuilder.HasDiscriminator();
+        return new TemporaryDiscriminatorBuilder(_entityTypeBuilder.HasDiscriminator(), Metadata);
     }
 
     public override DiscriminatorBuilder HasDiscriminator(string name, Type type)
     {
-        return _entityTypeBuilder.HasDiscriminator(name, type);
+        return new TemporaryDiscriminatorBuilder(_entityTypeBuilder.HasDiscriminator(name, type), Metadata);
     }
 
     public override DiscriminatorBuilder<TDiscriminator> HasDiscriminator<TDiscriminator>(string name)
