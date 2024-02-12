@@ -111,12 +111,12 @@ public sealed class TemporaryModelBuilder : ModelBuilder
 
     public override EntityTypeBuilder<TEntity> SharedTypeEntity<TEntity>(string name)
     {
-        return _modelBuilder.SharedTypeEntity<TEntity>(name);
+        return new TemporaryEntityTypeBuilder<TEntity>(_modelBuilder.SharedTypeEntity<TEntity>(name));
     }
 
     public override EntityTypeBuilder SharedTypeEntity(string name, Type type)
     {
-        return _modelBuilder.SharedTypeEntity(name, type);
+        return new TemporaryEntityTypeBuilder(_modelBuilder.SharedTypeEntity(name, type));
     }
 
     public override ModelBuilder SharedTypeEntity(string name, Type type, Action<EntityTypeBuilder> buildAction)
