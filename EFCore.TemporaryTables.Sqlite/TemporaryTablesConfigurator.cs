@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EFCore.TemporaryTables.Sqlite;
 
-internal sealed class SqliteTemporaryTablesConfigurator : 
-    IAddTemporaryTableConfiguration, 
+internal sealed class TemporaryTablesConfigurator :
+    IAddTemporaryTableConfiguration,
     IConfigureTemporaryTable
 {
-    private readonly IDictionary<Type, MulticastDelegate> _configurations = 
+    private readonly IDictionary<Type, MulticastDelegate> _configurations =
         new Dictionary<Type, MulticastDelegate>();
-    
+
     public void Add<TEntity>(MulticastDelegate configure) where TEntity : class
     {
         if (_configurations.ContainsKey(typeof(TEntity))) return;

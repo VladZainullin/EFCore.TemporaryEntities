@@ -4,15 +4,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EFCore.TemporaryTables.Sqlite;
 
-internal sealed class SqliteTemporaryTableOptionsExtension : IDbContextOptionsExtension
+internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtension
 {
     public void ApplyServices(IServiceCollection services)
     {
-        services.AddScoped<SqliteTemporaryTablesConfigurator>();
-        services.AddScoped<IAddTemporaryTableConfiguration>(s => s.GetRequiredService<SqliteTemporaryTablesConfigurator>());
-        services.AddScoped<IConfigureTemporaryTable>(s => s.GetRequiredService<SqliteTemporaryTablesConfigurator>());
-        services.AddScoped<ICreateTemporaryTableOperation, SqliteCreateTemporaryTable>();
-        services.AddScoped<IDropTemporaryTableOperation, SqliteDropTemporaryTable>();
+        services.AddScoped<TemporaryTablesConfigurator>();
+        services.AddScoped<IAddTemporaryTableConfiguration>(s => s.GetRequiredService<TemporaryTablesConfigurator>());
+        services.AddScoped<IConfigureTemporaryTable>(s => s.GetRequiredService<TemporaryTablesConfigurator>());
+        services.AddScoped<ICreateTemporaryTableOperation, CreateTemporaryTable>();
+        services.AddScoped<IDropTemporaryTableOperation, DropTemporaryTable>();
     }
 
     public void Validate(IDbContextOptions options)
@@ -20,7 +20,7 @@ internal sealed class SqliteTemporaryTableOptionsExtension : IDbContextOptionsEx
     }
 
     public DbContextOptionsExtensionInfo Info => new ExtensionInfo(this);
-    
+
     private sealed class ExtensionInfo : DbContextOptionsExtensionInfo
     {
         private string? _logFragment;

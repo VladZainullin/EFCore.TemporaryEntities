@@ -7,17 +7,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EFCore.TemporaryTables.Sqlite;
 
-internal sealed class SqliteCreateTemporaryTable : 
+internal sealed class CreateTemporaryTable :
     ICreateTemporaryTableOperation
 {
-    private readonly IConventionSetBuilder _conventionSetBuilder;
-    private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
     private readonly IConfigureTemporaryTable _addTemporaryEntityConfiguration;
+    private readonly IConventionSetBuilder _conventionSetBuilder;
+    private readonly ICurrentDbContext _currentDbContext;
     private readonly IMigrationsModelDiffer _migrationsModelDiffer;
     private readonly IMigrationsSqlGenerator _migrationsSqlGenerator;
-    private readonly ICurrentDbContext _currentDbContext;
+    private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
 
-    public SqliteCreateTemporaryTable(
+    public CreateTemporaryTable(
         IConventionSetBuilder conventionSetBuilder,
         IModelRuntimeInitializer modelRuntimeInitializer,
         IConfigureTemporaryTable addTemporaryEntityConfiguration,
@@ -33,7 +33,7 @@ internal sealed class SqliteCreateTemporaryTable :
         _currentDbContext = currentDbContext;
     }
 
-    public Task ExecuteAsync<TEntity>(CancellationToken cancellationToken = default) 
+    public Task ExecuteAsync<TEntity>(CancellationToken cancellationToken = default)
         where TEntity : class
     {
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
@@ -42,13 +42,13 @@ internal sealed class SqliteCreateTemporaryTable :
         _addTemporaryEntityConfiguration.Configure<TEntity>(modelBuilder);
 
         var model = modelBuilder.Model;
-        
+
         var finalizeModel = model.FinalizeModel();
 
         _modelRuntimeInitializer.Initialize(finalizeModel);
-        
+
         var relationalFinalizeModel = finalizeModel.GetRelationalModel();
-        
+
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
             default,
             relationalFinalizeModel);
@@ -57,13 +57,13 @@ internal sealed class SqliteCreateTemporaryTable :
         var stringBuilder = new StringBuilder();
 
         foreach (var migrationCommand in migrationCommands) stringBuilder.Append(migrationCommand.CommandText);
-        
+
         stringBuilder.Replace("CREATE TABLE", "CREATE TEMPORARY TABLE IF NOT EXISTS");
 
         return _currentDbContext.Context.Database.ExecuteSqlRawAsync(stringBuilder.ToString(), cancellationToken);
     }
 
-    public void Execute<TEntity>() 
+    public void Execute<TEntity>()
         where TEntity : class
     {
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
@@ -81,13 +81,13 @@ internal sealed class SqliteCreateTemporaryTable :
 
             entityType.SetIsTableExcludedFromMigrations(true);
         }
-        
+
         var finalizeModel = model.FinalizeModel();
 
         _modelRuntimeInitializer.Initialize(finalizeModel);
-        
+
         var relationalFinalizeModel = finalizeModel.GetRelationalModel();
-        
+
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
             default,
             relationalFinalizeModel);
@@ -96,7 +96,7 @@ internal sealed class SqliteCreateTemporaryTable :
         var stringBuilder = new StringBuilder();
 
         foreach (var migrationCommand in migrationCommands) stringBuilder.Append(migrationCommand.CommandText);
-        
+
         stringBuilder.Replace("CREATE TABLE", "CREATE TEMPORARY TABLE");
 
         _currentDbContext.Context.Database.ExecuteSqlRaw(stringBuilder.ToString());

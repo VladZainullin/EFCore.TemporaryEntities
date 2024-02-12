@@ -7,16 +7,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EFCore.TemporaryTables.Sqlite;
 
-internal sealed class SqliteDropTemporaryTable : IDropTemporaryTableOperation
+internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
 {
-    private readonly IConventionSetBuilder _conventionSetBuilder;
-    private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
     private readonly IConfigureTemporaryTable _addTemporaryEntityConfiguration;
+    private readonly IConventionSetBuilder _conventionSetBuilder;
+    private readonly ICurrentDbContext _currentDbContext;
     private readonly IMigrationsModelDiffer _migrationsModelDiffer;
     private readonly IMigrationsSqlGenerator _migrationsSqlGenerator;
-    private readonly ICurrentDbContext _currentDbContext;
+    private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
 
-    public SqliteDropTemporaryTable(
+    public DropTemporaryTable(
         IConventionSetBuilder conventionSetBuilder,
         IModelRuntimeInitializer modelRuntimeInitializer,
         IConfigureTemporaryTable addTemporaryEntityConfiguration,
@@ -31,7 +31,7 @@ internal sealed class SqliteDropTemporaryTable : IDropTemporaryTableOperation
         _migrationsSqlGenerator = migrationsSqlGenerator;
         _currentDbContext = currentDbContext;
     }
-    
+
     public Task ExecuteAsync<TEntity>(CancellationToken cancellationToken = default) where TEntity : class
     {
         var conventionSet = _conventionSetBuilder.CreateConventionSet();
@@ -40,13 +40,13 @@ internal sealed class SqliteDropTemporaryTable : IDropTemporaryTableOperation
         _addTemporaryEntityConfiguration.Configure<TEntity>(modelBuilder);
 
         var model = modelBuilder.Model;
-        
+
         var finalizeModel = model.FinalizeModel();
 
         _modelRuntimeInitializer.Initialize(finalizeModel);
-        
+
         var relationalFinalizeModel = finalizeModel.GetRelationalModel();
-        
+
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
             relationalFinalizeModel,
             default);
@@ -67,13 +67,13 @@ internal sealed class SqliteDropTemporaryTable : IDropTemporaryTableOperation
         _addTemporaryEntityConfiguration.Configure<TEntity>(modelBuilder);
 
         var model = modelBuilder.Model;
-        
+
         var finalizeModel = model.FinalizeModel();
 
         _modelRuntimeInitializer.Initialize(finalizeModel);
 
         var relationalFinalizeModel = finalizeModel.GetRelationalModel();
-        
+
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
             relationalFinalizeModel,
             default);
