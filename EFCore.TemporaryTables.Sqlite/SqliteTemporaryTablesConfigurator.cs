@@ -1,13 +1,17 @@
+using EFCore.TemporaryTables.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EFCore.TemporaryTables;
+namespace EFCore.TemporaryTables.Sqlite;
 
-internal sealed class TemporaryTableConfigurator
+internal sealed class SqliteTemporaryTablesConfigurator : 
+    IAddTemporaryTableConfiguration, 
+    IConfigureTemporaryTable
 {
-    private readonly Dictionary<Type, MulticastDelegate> _configurations = new();
-
-    public void Add<TEntity>(Action<EntityTypeBuilder<TEntity>> configure) where TEntity : class
+    private readonly IDictionary<Type, MulticastDelegate> _configurations = 
+        new Dictionary<Type, MulticastDelegate>();
+    
+    public void Add<TEntity>(MulticastDelegate configure) where TEntity : class
     {
         if (_configurations.ContainsKey(typeof(TEntity))) return;
 

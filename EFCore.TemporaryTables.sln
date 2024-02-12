@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.TemporaryTables", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.TemporaryTables.Abstractions", "EFCore.TemporaryTables.Abstractions\EFCore.TemporaryTables.Abstractions.csproj", "{11671CA2-C368-4FC7-8440-CEA46FE5E5E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.TemporaryTables.Sqlite", "EFCore.TemporaryTables.Sqlite\EFCore.TemporaryTables.Sqlite.csproj", "{175CC763-CAD4-4C29-BB4F-FB1D4085DC69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{11671CA2-C368-4FC7-8440-CEA46FE5E5E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11671CA2-C368-4FC7-8440-CEA46FE5E5E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11671CA2-C368-4FC7-8440-CEA46FE5E5E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{175CC763-CAD4-4C29-BB4F-FB1D4085DC69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{175CC763-CAD4-4C29-BB4F-FB1D4085DC69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{175CC763-CAD4-4C29-BB4F-FB1D4085DC69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{175CC763-CAD4-4C29-BB4F-FB1D4085DC69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

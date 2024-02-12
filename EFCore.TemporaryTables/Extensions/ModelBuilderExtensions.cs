@@ -1,3 +1,4 @@
+using EFCore.TemporaryTables.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,8 +14,8 @@ public static class ModelBuilderExtensions
     {
         var entityTypeBuilder = modelBuilder.Entity<TEntity>();
 
-        var temporaryTableConfiguration = infrastructure.GetService<TemporaryTableConfigurator>();
-        temporaryTableConfiguration.Add(configure);
+        var temporaryTableConfiguration = infrastructure.GetService<IAddTemporaryTableConfiguration>();
+        temporaryTableConfiguration.Add<TEntity>(configure);
 
         configure(entityTypeBuilder);
         entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);

@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\EFCore.TemporaryTables.Sqlite\EFCore.TemporaryTables.Sqlite.csproj" />
         <ProjectReference Include="..\EFCore.TemporaryTables\EFCore.TemporaryTables.csproj"/>
     </ItemGroup>
 
