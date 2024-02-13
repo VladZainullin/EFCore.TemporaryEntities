@@ -24,22 +24,22 @@ public class TemporaryOwnedNavigationBuilder : OwnedNavigationBuilder
 
     public override NavigationBuilder Navigation(string navigationName)
     {
-        return _ownedNavigationBuilder.Navigation(navigationName);
+        return new TemporaryNavigationBuilder(_ownedNavigationBuilder.Navigation(navigationName));
     }
 
     public override PropertyBuilder Property(Type propertyType, string propertyName)
     {
-        return _ownedNavigationBuilder.Property(propertyType, propertyName);
+        return new TemporaryPropertyBuilder(_ownedNavigationBuilder.Property(propertyType, propertyName));
     }
 
     public override PropertyBuilder Property(string propertyName)
     {
-        return _ownedNavigationBuilder.Property(propertyName);
+        return new TemporaryPropertyBuilder(_ownedNavigationBuilder.Property(propertyName));
     }
 
     public override PropertyBuilder<TProperty> Property<TProperty>(string propertyName)
     {
-        return _ownedNavigationBuilder.Property<TProperty>(propertyName);
+        return new TemporaryPropertyBuilder<TProperty>(_ownedNavigationBuilder.Property<TProperty>(propertyName));
     }
 
     public override OwnedNavigationBuilder HasAnnotation(string annotation, object? value)
@@ -84,22 +84,22 @@ public class TemporaryOwnedNavigationBuilder : OwnedNavigationBuilder
 
     public override PropertyBuilder IndexerProperty(Type propertyType, string propertyName)
     {
-        return _ownedNavigationBuilder.IndexerProperty(propertyType, propertyName);
+        return new TemporaryPropertyBuilder(_ownedNavigationBuilder.IndexerProperty(propertyType, propertyName));
     }
 
     public override PropertyBuilder<TProperty> IndexerProperty<TProperty>(string propertyName)
     {
-        return _ownedNavigationBuilder.IndexerProperty<TProperty>(propertyName);
+        return new TemporaryPropertyBuilder<TProperty>(_ownedNavigationBuilder.IndexerProperty<TProperty>(propertyName));
     }
 
     public override OwnedNavigationBuilder OwnsMany(string ownedTypeName, Type ownedType, string navigationName, Action<OwnedNavigationBuilder> buildAction)
     {
-        return _ownedNavigationBuilder.OwnsMany(ownedTypeName, ownedType, navigationName, buildAction);
+        return new TemporaryOwnedNavigationBuilder(_ownedNavigationBuilder.OwnsMany(ownedTypeName, ownedType, navigationName, buildAction));
     }
 
     public override OwnedNavigationBuilder OwnsMany(Type ownedType, string navigationName, Action<OwnedNavigationBuilder> buildAction)
     {
-        return _ownedNavigationBuilder.OwnsMany(ownedType, navigationName, buildAction);
+        return new TemporaryOwnedNavigationBuilder(_ownedNavigationBuilder.OwnsMany(ownedType, navigationName, buildAction));
     }
 
     public override OwnedNavigationBuilder OwnsMany(string ownedTypeName, string navigationName, Action<OwnedNavigationBuilder> buildAction)
@@ -161,12 +161,12 @@ public class TemporaryOwnedNavigationBuilder : OwnedNavigationBuilder
 
     public override OwnedNavigationBuilder HasChangeTrackingStrategy(ChangeTrackingStrategy changeTrackingStrategy)
     {
-        return _ownedNavigationBuilder.HasChangeTrackingStrategy(changeTrackingStrategy);
+        return new TemporaryOwnedNavigationBuilder(_ownedNavigationBuilder.HasChangeTrackingStrategy(changeTrackingStrategy));
     }
 
     public override OwnedNavigationBuilder UsePropertyAccessMode(PropertyAccessMode propertyAccessMode)
     {
-        return _ownedNavigationBuilder.UsePropertyAccessMode(propertyAccessMode);
+        return new TemporaryOwnedNavigationBuilder(_ownedNavigationBuilder.UsePropertyAccessMode(propertyAccessMode));
     }
 
     public override bool Equals(object? obj)
