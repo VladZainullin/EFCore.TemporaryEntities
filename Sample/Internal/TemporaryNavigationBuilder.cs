@@ -33,27 +33,27 @@ public sealed class TemporaryNavigationBuilder : NavigationBuilder
 
     public override NavigationBuilder HasAnnotation(string annotation, object? value)
     {
-        return _navigationBuilder.HasAnnotation(annotation, value);
+        return new TemporaryNavigationBuilder(_navigationBuilder.HasAnnotation(annotation, value));
     }
 
     public override NavigationBuilder UsePropertyAccessMode(PropertyAccessMode propertyAccessMode)
     {
-        return _navigationBuilder.UsePropertyAccessMode(propertyAccessMode);
+        return new TemporaryNavigationBuilder(_navigationBuilder.UsePropertyAccessMode(propertyAccessMode));
     }
 
     public override NavigationBuilder HasField(string? fieldName)
     {
-        return _navigationBuilder.HasField(fieldName);
+        return new TemporaryNavigationBuilder(_navigationBuilder.HasField(fieldName));
     }
 
     public override NavigationBuilder IsRequired(bool required = true)
     {
-        return _navigationBuilder.IsRequired(required);
+        return new TemporaryNavigationBuilder(_navigationBuilder.IsRequired(required));
     }
 
     public override NavigationBuilder AutoInclude(bool autoInclude = true)
     {
-        return _navigationBuilder.AutoInclude(autoInclude);
+        return new TemporaryNavigationBuilder(_navigationBuilder.AutoInclude(autoInclude));
     }
 }
 
@@ -88,26 +88,26 @@ public sealed class TemporaryNavigationBuilder<TSource, TTarget> : NavigationBui
 
     public override NavigationBuilder<TSource, TTarget>  HasAnnotation(string annotation, object? value)
     {
-        return _navigationBuilder.HasAnnotation(annotation, value);
+        return new TemporaryNavigationBuilder<TSource, TTarget>(_navigationBuilder.HasAnnotation(annotation, value));
     }
 
     public override NavigationBuilder<TSource, TTarget>  UsePropertyAccessMode(PropertyAccessMode propertyAccessMode)
     {
-        return _navigationBuilder.UsePropertyAccessMode(propertyAccessMode);
+        return new TemporaryNavigationBuilder<TSource, TTarget>(_navigationBuilder.UsePropertyAccessMode(propertyAccessMode));
     }
 
     public override NavigationBuilder<TSource, TTarget>  HasField(string? fieldName)
     {
-        return _navigationBuilder.HasField(fieldName);
+        return new TemporaryNavigationBuilder<TSource, TTarget>(_navigationBuilder.HasField(fieldName));
     }
 
     public override NavigationBuilder<TSource, TTarget>  IsRequired(bool required = true)
     {
-        return _navigationBuilder.IsRequired(required);
+        return new TemporaryNavigationBuilder<TSource, TTarget>(_navigationBuilder.IsRequired(required));
     }
 
     public override NavigationBuilder<TSource, TTarget>  AutoInclude(bool autoInclude = true)
     {
-        return _navigationBuilder.AutoInclude(autoInclude);
+        return new TemporaryNavigationBuilder<TSource, TTarget>(_navigationBuilder.AutoInclude(autoInclude));
     }
 }

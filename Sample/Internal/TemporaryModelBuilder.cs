@@ -33,30 +33,22 @@ public sealed class TemporaryModelBuilder : ModelBuilder
 
     public override ModelBuilder Entity<TEntity>(Action<EntityTypeBuilder<TEntity>> buildAction)
     {
-        _modelBuilder.Entity(buildAction);
-
-        return _modelBuilder;
+        return new TemporaryModelBuilder(_modelBuilder.Entity(buildAction));
     }
 
     public override ModelBuilder Entity(Type type, Action<EntityTypeBuilder> buildAction)
     {
-        _modelBuilder.Entity(type, buildAction);
-
-        return _modelBuilder;
+        return new TemporaryModelBuilder(_modelBuilder.Entity(type, buildAction));
     }
 
     public override ModelBuilder Entity(string name, Action<EntityTypeBuilder> buildAction)
     {
-        _modelBuilder.Entity(name, buildAction);
-
-        return _modelBuilder;
+        return new TemporaryModelBuilder(_modelBuilder.Entity(name, buildAction));
     }
 
     public override ModelBuilder HasAnnotation(string annotation, object? value)
     {
-        _modelBuilder.HasAnnotation(annotation, value);
-
-        return _modelBuilder;
+        return new TemporaryModelBuilder(_modelBuilder.HasAnnotation(annotation, value));
     }
 
     public override OwnedEntityTypeBuilder Owned(Type type)
@@ -81,22 +73,22 @@ public sealed class TemporaryModelBuilder : ModelBuilder
 
     public override ModelBuilder Ignore<TEntity>()
     {
-        return _modelBuilder.Ignore<TEntity>();
+        return new TemporaryModelBuilder(_modelBuilder.Ignore<TEntity>());
     }
 
     public override ModelBuilder Ignore(Type type)
     {
-        return _modelBuilder.Ignore(type);
+        return new TemporaryModelBuilder(_modelBuilder.Ignore(type));
     }
 
     public override ModelBuilder Ignore(string typeName)
     {
-        return _modelBuilder.Ignore(typeName);
+        return new TemporaryModelBuilder(_modelBuilder.Ignore(typeName));
     }
 
     public override ModelBuilder ApplyConfiguration<TEntity>(IEntityTypeConfiguration<TEntity> configuration)
     {
-        return _modelBuilder.ApplyConfiguration(configuration);
+        return new TemporaryModelBuilder(_modelBuilder.ApplyConfiguration(configuration));
     }
 
     public override string? ToString()
@@ -106,7 +98,7 @@ public sealed class TemporaryModelBuilder : ModelBuilder
 
     public override ModelBuilder SharedTypeEntity<TEntity>(string name, Action<EntityTypeBuilder<TEntity>> buildAction)
     {
-        return _modelBuilder.SharedTypeEntity(name, buildAction);
+        return new TemporaryModelBuilder(_modelBuilder.SharedTypeEntity(name, buildAction));
     }
 
     public override EntityTypeBuilder<TEntity> SharedTypeEntity<TEntity>(string name)
@@ -121,7 +113,7 @@ public sealed class TemporaryModelBuilder : ModelBuilder
 
     public override ModelBuilder SharedTypeEntity(string name, Type type, Action<EntityTypeBuilder> buildAction)
     {
-        return _modelBuilder.SharedTypeEntity(name, type, buildAction);
+        return new TemporaryModelBuilder(_modelBuilder.SharedTypeEntity(name, type, buildAction));
     }
 
     public override IModel FinalizeModel()
@@ -131,16 +123,16 @@ public sealed class TemporaryModelBuilder : ModelBuilder
 
     public override ModelBuilder ApplyConfigurationsFromAssembly(Assembly assembly, Func<Type, bool>? predicate = null)
     {
-        return _modelBuilder.ApplyConfigurationsFromAssembly(assembly, predicate);
+        return new TemporaryModelBuilder(_modelBuilder.ApplyConfigurationsFromAssembly(assembly, predicate));
     }
 
     public override ModelBuilder HasChangeTrackingStrategy(ChangeTrackingStrategy changeTrackingStrategy)
     {
-        return _modelBuilder.HasChangeTrackingStrategy(changeTrackingStrategy);
+        return new TemporaryModelBuilder(_modelBuilder.HasChangeTrackingStrategy(changeTrackingStrategy));
     }
 
     public override ModelBuilder UsePropertyAccessMode(PropertyAccessMode propertyAccessMode)
     {
-        return _modelBuilder.UsePropertyAccessMode(propertyAccessMode);
+        return new TemporaryModelBuilder(_modelBuilder.UsePropertyAccessMode(propertyAccessMode));
     }
 }

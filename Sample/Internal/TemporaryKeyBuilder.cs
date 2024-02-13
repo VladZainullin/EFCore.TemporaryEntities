@@ -62,7 +62,7 @@ public sealed class TemporaryKeyBuilder<TKey> : KeyBuilder<TKey>
 
     public override KeyBuilder<TKey> HasAnnotation(string annotation, object? value)
     {
-        return _keyBuilder.HasAnnotation(annotation, value);
+        return new TemporaryKeyBuilder<TKey>(_keyBuilder.HasAnnotation(annotation, value));
     }
 
     public override string? ToString()

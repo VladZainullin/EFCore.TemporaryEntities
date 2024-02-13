@@ -27,7 +27,7 @@ public sealed class TemporaryIndexBuilder : IndexBuilder
 
     public override IndexBuilder HasAnnotation(string annotation, object? value)
     {
-        return _indexBuilder.HasAnnotation(annotation, value);
+        return new TemporaryIndexBuilder(_indexBuilder.HasAnnotation(annotation, value));
     }
 
     public override string? ToString()
@@ -37,12 +37,12 @@ public sealed class TemporaryIndexBuilder : IndexBuilder
 
     public override IndexBuilder IsDescending(params bool[] descending)
     {
-        return _indexBuilder.IsDescending(descending);
+        return new TemporaryIndexBuilder(_indexBuilder.IsDescending(descending));
     }
 
     public override IndexBuilder IsUnique(bool unique = true)
     {
-        return _indexBuilder.IsUnique(unique);
+        return new TemporaryIndexBuilder(_indexBuilder.IsUnique(unique));
     }
 }
 
@@ -70,7 +70,7 @@ public sealed class TemporaryIndexBuilder<T> : IndexBuilder<T>
 
     public override IndexBuilder<T> HasAnnotation(string annotation, object? value)
     {
-        return _indexBuilder.HasAnnotation(annotation, value);
+        return new TemporaryIndexBuilder<T>(_indexBuilder.HasAnnotation(annotation, value));
     }
 
     public override string? ToString()
@@ -80,11 +80,11 @@ public sealed class TemporaryIndexBuilder<T> : IndexBuilder<T>
 
     public override IndexBuilder<T> IsDescending(params bool[] descending)
     {
-        return _indexBuilder.IsDescending(descending);
+        return new TemporaryIndexBuilder<T>(_indexBuilder.IsDescending(descending));
     }
 
     public override IndexBuilder<T> IsUnique(bool unique = true)
     {
-        return _indexBuilder.IsUnique(unique);
+        return new TemporaryIndexBuilder<T>(_indexBuilder.IsUnique(unique));
     }
 }
