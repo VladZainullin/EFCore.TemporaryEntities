@@ -45,14 +45,14 @@ public static class Program
     public static async Task Main()
     {
         await using var context = new AppDbContext();
-
+        
         await context.Database.BeginTransactionAsync();
 
         try
         {
             for (var i = 0; i < 2; i++)
             {
-                var temporaryTable = context.CreateTemporaryTable<People>();
+                var temporaryTable = await context.CreateTemporaryTableAsync<People>();
 
                 temporaryTable.Add(People);
 
@@ -62,7 +62,7 @@ public static class Program
                     .AsNoTracking()
                     .ToListAsync();
 
-                context.DropTemporaryTable<People>();
+                await context.DropTemporaryTableAsync<People>();
             }
         }
         catch

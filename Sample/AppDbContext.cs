@@ -1,6 +1,5 @@
 using EFCore.TemporaryTables.Extensions;
 using EFCore.TemporaryTables.PostgreSQL;
-using EFCore.TemporaryTables.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -11,17 +10,10 @@ public sealed class AppDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            // .UseInMemoryDatabase("app", o =>
-            // {
-            // })
             .UseNpgsql("Host=localhost;Port=5433;Database=postgres;Username=postgres;Password=123456", o =>
             {
                 o.UseTemporaryTables();
             })
-            // .UseSqlite("DataSource=/Users/vadislavzainullin/RiderProjects/EFCore.TemporaryTables/Sample/app.db", o =>
-            // {
-            //     o.UseTemporaryTables();
-            // })
             .LogTo(Console.WriteLine, LogLevel.Information);
 
         base.OnConfiguring(optionsBuilder);
@@ -50,6 +42,7 @@ public sealed class AppDbContext : DbContext
                 .OwnsOne(p => p.Work, ownedNavigationBuilder => { ownedNavigationBuilder.OwnsOne(w => w.Address); });
 
             entityTypeBuilder.OwnsOne(p => p.Address);
+            entityTypeBuilder.HasAnnotation("TemporaryTable", true);
             entityTypeBuilder.ToTable("temp_peoples");
         });
 
