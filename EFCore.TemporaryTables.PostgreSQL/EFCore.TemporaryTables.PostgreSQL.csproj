@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\EFCore.TemporaryTables.Abstractions\EFCore.TemporaryTables.Abstractions.csproj" />
+      <ProjectReference Include="..\EFCore.TemporaryTables\EFCore.TemporaryTables.csproj" />
     </ItemGroup>
 
 </Project>

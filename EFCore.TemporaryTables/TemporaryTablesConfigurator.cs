@@ -1,9 +1,8 @@
 using EFCore.TemporaryTables.Abstractions;
-using EFCore.TemporaryTables.PostgreSQL.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EFCore.TemporaryTables.PostgreSQL;
+namespace EFCore.TemporaryTables;
 
 internal sealed class TemporaryTablesConfigurator : 
     IAddTemporaryTableConfiguration, 

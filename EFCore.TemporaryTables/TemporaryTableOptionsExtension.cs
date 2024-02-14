@@ -1,12 +1,13 @@
 using EFCore.TemporaryTables.Abstractions;
-using EFCore.TemporaryTables.PostgreSQL.Abstractions;
-using EFCore.TemporaryTables.PostgreSQL.Operations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EFCore.TemporaryTables.PostgreSQL;
+namespace EFCore.TemporaryTables;
 
-internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtension
+public sealed class TemporaryTableOptionsExtension<TCreateOperation, TDropOperation> :
+    IDbContextOptionsExtension
+    where TCreateOperation : class, ICreateTemporaryTableOperation
+    where TDropOperation : class, IDropTemporaryTableOperation
 {
     public void ApplyServices(IServiceCollection services)
     {
@@ -14,8 +15,8 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
         services.AddScoped<IAddTemporaryTableConfiguration>(s => s.GetRequiredService<TemporaryTablesConfigurator>());
         services.AddScoped<IConfigureTemporaryTable>(s => s.GetRequiredService<TemporaryTablesConfigurator>());
         services.Decorate<IModelCustomizer, TemporaryModelCustomizer>();
-        services.AddScoped<ICreateTemporaryTableOperation, CreateTemporaryTable>();
-        services.AddScoped<IDropTemporaryTableOperation, DropTemporaryTable>();
+        services.AddScoped<ICreateTemporaryTableOperation, TCreateOperation>();
+        services.AddScoped<IDropTemporaryTableOperation, TDropOperation>();
     }
 
     public void Validate(IDbContextOptions options)

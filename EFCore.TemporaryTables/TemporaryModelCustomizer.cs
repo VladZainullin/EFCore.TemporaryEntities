@@ -2,7 +2,7 @@ using EFCore.TemporaryTables.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace EFCore.TemporaryTables.PostgreSQL;
+namespace EFCore.TemporaryTables;
 
 internal class TemporaryModelCustomizer : IModelCustomizer
 {

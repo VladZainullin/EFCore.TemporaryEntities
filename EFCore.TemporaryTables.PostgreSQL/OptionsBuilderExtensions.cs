@@ -1,3 +1,4 @@
+using EFCore.TemporaryTables.PostgreSQL.Operations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
 
@@ -15,10 +16,10 @@ public static class OptionsBuilderExtensions
         var dbContextOptionsBuilderInfrastructure = optionsBuilder as 
             IDbContextOptionsBuilderInfrastructure;
         
-        var extension = optionsBuilder.Options.FindExtension<TemporaryTableOptionsExtension>();
+        var extension = optionsBuilder.Options.FindExtension<TemporaryTableOptionsExtension<CreateTemporaryTable, DropTemporaryTable>>();
         if (!ReferenceEquals(extension, default)) return sqliteDbContextOptionsBuilder;
         
-        dbContextOptionsBuilderInfrastructure.AddOrUpdateExtension(new TemporaryTableOptionsExtension());
+        dbContextOptionsBuilderInfrastructure.AddOrUpdateExtension(new TemporaryTableOptionsExtension<CreateTemporaryTable, DropTemporaryTable>());
 
         return sqliteDbContextOptionsBuilder;
     }

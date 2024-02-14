@@ -1,4 +1,4 @@
-using EFCore.TemporaryTables.PostgreSQL.Abstractions;
+using EFCore.TemporaryTables.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

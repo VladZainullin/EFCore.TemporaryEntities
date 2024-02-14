@@ -1,6 +1,5 @@
 using System.Text;
 using EFCore.TemporaryTables.Abstractions;
-using EFCore.TemporaryTables.PostgreSQL.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
