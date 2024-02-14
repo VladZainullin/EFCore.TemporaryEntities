@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace EFCore.TemporaryTables.PostgreSQL;
 
-public class TemporaryModelCustomizer : IModelCustomizer
+internal class TemporaryModelCustomizer : IModelCustomizer
 {
     private readonly IModelCustomizer _modelCustomizer;
 
