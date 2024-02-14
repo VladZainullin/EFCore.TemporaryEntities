@@ -13,6 +13,7 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
         services.AddScoped<TemporaryTablesConfigurator>();
         services.AddScoped<IAddTemporaryTableConfiguration>(s => s.GetRequiredService<TemporaryTablesConfigurator>());
         services.AddScoped<IConfigureTemporaryTable>(s => s.GetRequiredService<TemporaryTablesConfigurator>());
+        services.Decorate<IModelCustomizer, TemporaryModelCustomizer>();
         services.AddScoped<ICreateTemporaryTableOperation, CreateTemporaryTable>();
         services.AddScoped<IDropTemporaryTableOperation, DropTemporaryTable>();
     }
@@ -22,7 +23,7 @@ internal sealed class TemporaryTableOptionsExtension : IDbContextOptionsExtensio
     }
 
     public DbContextOptionsExtensionInfo Info => new ExtensionInfo(this);
-    
+
     private sealed class ExtensionInfo : DbContextOptionsExtensionInfo
     {
         private string? _logFragment;
