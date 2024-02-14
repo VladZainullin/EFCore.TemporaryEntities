@@ -136,11 +136,12 @@ internal sealed class TemporaryModelBuilder : ModelBuilder
                      && e.GetParameters().SingleOrDefault()?.ParameterType.GetGenericTypeDefinition()
                      == typeof(IEntityTypeConfiguration<>));
 
-        var types = assembly.GetTypes();
+        var types = assembly
+            .GetTypes()
+            .Where(t => t is { IsAbstract: false, IsGenericTypeDefinition: false })
+            .OrderBy(t => t.FullName);
 
-        foreach (var type in types
-                     .Where(t => t is { IsAbstract: false, IsGenericTypeDefinition: false })
-                     .OrderBy(t => t.FullName))
+        foreach (var type in types)
         {
             if (type.GetConstructor(Type.EmptyTypes) == default || (!predicate?.Invoke(type) ?? default)) continue;
 
