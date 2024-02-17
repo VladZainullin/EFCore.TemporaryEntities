@@ -7,20 +7,20 @@ namespace EFCore.TemporaryTables.PostgreSQL;
 public static class OptionsBuilderExtensions
 {
     public static NpgsqlDbContextOptionsBuilder UseTemporaryTables(
-        this NpgsqlDbContextOptionsBuilder sqliteDbContextOptionsBuilder)
+        this NpgsqlDbContextOptionsBuilder relationalOptionsBuilder)
     {
         var relationalDbContextOptionsBuilderInfrastructure =
-            sqliteDbContextOptionsBuilder as IRelationalDbContextOptionsBuilderInfrastructure;
+            relationalOptionsBuilder as IRelationalDbContextOptionsBuilderInfrastructure;
 
         var optionsBuilder = relationalDbContextOptionsBuilderInfrastructure.OptionsBuilder;
         var dbContextOptionsBuilderInfrastructure = optionsBuilder as 
             IDbContextOptionsBuilderInfrastructure;
         
         var extension = optionsBuilder.Options.FindExtension<TemporaryTableOptionsExtension<CreateTemporaryTable, DropTemporaryTable>>();
-        if (!ReferenceEquals(extension, default)) return sqliteDbContextOptionsBuilder;
+        if (!ReferenceEquals(extension, default)) return relationalOptionsBuilder;
         
         dbContextOptionsBuilderInfrastructure.AddOrUpdateExtension(new TemporaryTableOptionsExtension<CreateTemporaryTable, DropTemporaryTable>());
 
-        return sqliteDbContextOptionsBuilder;
+        return relationalOptionsBuilder;
     }
 }
