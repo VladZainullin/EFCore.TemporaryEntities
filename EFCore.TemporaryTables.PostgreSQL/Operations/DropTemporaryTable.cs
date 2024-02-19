@@ -2,31 +2,25 @@ using System.Text;
 using EFCore.TemporaryTables.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace EFCore.TemporaryTables.PostgreSQL.Operations;
 
 internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
 {
-    private readonly IConventionSetBuilder _conventionSetBuilder;
-    private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
-    private readonly IConfigureTemporaryTable _addTemporaryEntityConfiguration;
+    private readonly ITemporaryRelationalModelCreator _temporaryRelationalModelCreator;
     private readonly IMigrationsModelDiffer _migrationsModelDiffer;
     private readonly IMigrationsSqlGenerator _migrationsSqlGenerator;
     private readonly ICurrentDbContext _currentDbContext;
 
     public DropTemporaryTable(
-        IConventionSetBuilder conventionSetBuilder,
-        IModelRuntimeInitializer modelRuntimeInitializer,
-        IConfigureTemporaryTable addTemporaryEntityConfiguration,
+        ITemporaryRelationalModelCreator temporaryRelationalModelCreator,
         IMigrationsModelDiffer migrationsModelDiffer,
         IMigrationsSqlGenerator migrationsSqlGenerator,
         ICurrentDbContext currentDbContext)
     {
-        _conventionSetBuilder = conventionSetBuilder;
-        _modelRuntimeInitializer = modelRuntimeInitializer;
-        _addTemporaryEntityConfiguration = addTemporaryEntityConfiguration;
+        _temporaryRelationalModelCreator = temporaryRelationalModelCreator;
         _migrationsModelDiffer = migrationsModelDiffer;
         _migrationsSqlGenerator = migrationsSqlGenerator;
         _currentDbContext = currentDbContext;
@@ -34,18 +28,7 @@ internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
     
     public Task ExecuteAsync<TEntity>(CancellationToken cancellationToken = default) where TEntity : class
     {
-        var conventionSet = _conventionSetBuilder.CreateConventionSet();
-        var modelBuilder = new ModelBuilder(conventionSet);
-
-        _addTemporaryEntityConfiguration.Configure<TEntity>(modelBuilder);
-
-        var model = modelBuilder.Model;
-        
-        var finalizeModel = model.FinalizeModel();
-
-        _modelRuntimeInitializer.Initialize(finalizeModel);
-        
-        var relationalFinalizeModel = finalizeModel.GetRelationalModel();
+        var relationalFinalizeModel = _temporaryRelationalModelCreator.Create<TEntity>();
         
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
             relationalFinalizeModel,
@@ -54,25 +37,17 @@ internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
 
         var stringBuilder = new StringBuilder();
 
-        foreach (var migrationCommand in migrationCommands) stringBuilder.Append(migrationCommand.CommandText);
+        foreach (var migrationCommand in migrationCommands)
+        {
+            stringBuilder.Append(migrationCommand.CommandText);
+        }
 
         return _currentDbContext.Context.Database.ExecuteSqlRawAsync(stringBuilder.ToString(), cancellationToken);
     }
 
     public void Execute<TEntity>() where TEntity : class
     {
-        var conventionSet = _conventionSetBuilder.CreateConventionSet();
-        var modelBuilder = new ModelBuilder(conventionSet);
-
-        _addTemporaryEntityConfiguration.Configure<TEntity>(modelBuilder);
-
-        var model = modelBuilder.Model;
-        
-        var finalizeModel = model.FinalizeModel();
-
-        _modelRuntimeInitializer.Initialize(finalizeModel);
-
-        var relationalFinalizeModel = finalizeModel.GetRelationalModel();
+        var relationalFinalizeModel = _temporaryRelationalModelCreator.Create<TEntity>();
         
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
             relationalFinalizeModel,
