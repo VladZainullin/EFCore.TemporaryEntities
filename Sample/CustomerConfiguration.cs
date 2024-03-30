@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Sample;
 
-public sealed class PeopleConfiguration : ITemporaryEntityTypeConfiguration<People>
+public sealed class CustomerConfiguration : ITemporaryEntityTypeConfiguration<Customer>
 {
-    public void Configure(EntityTypeBuilder<People> entityTypeBuilder)
+    public void Configure(EntityTypeBuilder<Customer> builder)
     {
-        entityTypeBuilder.HasKey(p => p.Id);
+        builder.HasKey(p => p.Id);
 
-        entityTypeBuilder
+        builder
             .OwnsOne(
                 p => p.Identification,
                 ownedNavigationBuilder =>
@@ -24,7 +24,7 @@ public sealed class PeopleConfiguration : ITemporaryEntityTypeConfiguration<Peop
                 ownedNavigationBuilder => { ownedNavigationBuilder.HasIndex(f => f.HasPartner); })
             .OwnsOne(p => p.Work, ownedNavigationBuilder => { ownedNavigationBuilder.OwnsOne(w => w.Address); });
 
-        entityTypeBuilder.OwnsOne(p => p.Address);
-        entityTypeBuilder.ToTable("temp_peoples");
+        builder.OwnsOne(p => p.Address);
+        builder.ToTable("temp_customers");
     }
 }

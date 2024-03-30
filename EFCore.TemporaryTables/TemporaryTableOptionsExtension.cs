@@ -4,10 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EFCore.TemporaryTables;
 
-public sealed class TemporaryTableOptionsExtension<TCreateOperation, TDropOperation> :
+public sealed class TemporaryTableOptionsExtension<TCreateOperation, TDropOperation, TCreateFromQueryableOperation> :
     IDbContextOptionsExtension
     where TCreateOperation : class, ICreateTemporaryTableOperation
     where TDropOperation : class, IDropTemporaryTableOperation
+    where TCreateFromQueryableOperation : class, ICreateTemporaryTableFromQueryableOperation
 {
     public void ApplyServices(IServiceCollection services)
     {
@@ -18,6 +19,7 @@ public sealed class TemporaryTableOptionsExtension<TCreateOperation, TDropOperat
         services.Decorate<IModelCustomizer, TemporaryModelCustomizer>();
         services.AddScoped<ICreateTemporaryTableOperation, TCreateOperation>();
         services.AddScoped<IDropTemporaryTableOperation, TDropOperation>();
+        services.AddScoped<ICreateTemporaryTableFromQueryableOperation, TCreateFromQueryableOperation>();
     }
 
     public void Validate(IDbContextOptions options)

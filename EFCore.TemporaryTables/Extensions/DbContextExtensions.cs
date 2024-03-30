@@ -24,6 +24,17 @@ public static class DbContextExtensions
 
         return context.Set<TEntity>();
     }
+    
+    public static async Task<DbSet<TEntity>> CreateTemporaryTableAsync<TEntity>(
+        this DbContext context,
+        IQueryable<TEntity> queryable,
+        CancellationToken cancellationToken = default)
+        where TEntity : class
+    {
+        await context.GetService<ICreateTemporaryTableFromQueryableOperation>().ExecuteAsync(queryable, cancellationToken);
+
+        return context.Set<TEntity>();
+    }
 
     public static Task DropTemporaryTableAsync<TEntity>(
         this DbContext context,
