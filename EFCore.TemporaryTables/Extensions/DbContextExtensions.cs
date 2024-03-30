@@ -6,7 +6,7 @@ namespace EFCore.TemporaryTables.Extensions;
 
 public static class DbContextExtensions
 {
-    public static async Task<DbSet<TEntity>> CreateTemporaryTableAsync<TEntity>(
+    public static async Task<DbSet<TEntity>> CreateTemporaryEntityAsync<TEntity>(
         this DbContext context,
         CancellationToken cancellationToken = default)
         where TEntity : class
@@ -16,7 +16,7 @@ public static class DbContextExtensions
         return context.Set<TEntity>();
     }
 
-    public static async Task<DbSet<TEntity>> CreateTemporaryTableAsync<TEntity>(
+    public static async Task<DbSet<TEntity>> CreateTemporaryEntityAsync<TEntity>(
         this DbContext context,
         IQueryable<TEntity> queryable,
         CancellationToken cancellationToken = default)
@@ -29,7 +29,7 @@ public static class DbContextExtensions
         return context.Set<TEntity>();
     }
 
-    public static async Task<DbSet<TEntity>> CreateTemporaryTableAsync<TContext, TEntity>(
+    public static async Task<DbSet<TEntity>> CreateTemporaryEntityAsync<TContext, TEntity>(
         this TContext context,
         Func<TContext, IQueryable<TEntity>> getQueryable,
         CancellationToken cancellationToken = default)
@@ -46,7 +46,7 @@ public static class DbContextExtensions
         return context.Set<TEntity>();
     }
 
-    public static Task DropTemporaryTableAsync<TEntity>(
+    public static Task DropTemporaryEntityAsync<TEntity>(
         this DbContext context,
         CancellationToken cancellationToken = default)
         where TEntity : class
