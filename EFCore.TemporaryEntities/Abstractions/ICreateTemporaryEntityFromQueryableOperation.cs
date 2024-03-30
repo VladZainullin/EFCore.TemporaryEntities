@@ -1,6 +1,6 @@
 namespace EFCore.TemporaryTables.Abstractions;
 
-public interface ICreateTemporaryTableFromQueryableOperation
+public interface ICreateTemporaryEntityFromQueryableOperation
 {
     Task ExecuteAsync<TEntity>(
         IQueryable<TEntity> queryable,

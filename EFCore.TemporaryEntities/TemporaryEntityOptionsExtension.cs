@@ -4,20 +4,20 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EFCore.TemporaryTables;
 
-public sealed class TemporaryTableOptionsExtension<TCreateOperation, TDropOperation, TCreateFromQueryableOperation> :
+public sealed class TemporaryEntityOptionsExtension<TCreateOperation, TDropOperation, TCreateFromQueryableOperation> :
     IDbContextOptionsExtension
-    where TCreateOperation : class, ICreateTemporaryTableOperation
-    where TDropOperation : class, IDropTemporaryTableOperation
-    where TCreateFromQueryableOperation : class, ICreateTemporaryTableFromQueryableOperation
+    where TCreateOperation : class, ICreateTemporaryEntityOperation
+    where TDropOperation : class, IDropTemporaryEntityOperation
+    where TCreateFromQueryableOperation : class, ICreateTemporaryEntityFromQueryableOperation
 {
     public void ApplyServices(IServiceCollection services)
     {
-        services.AddScoped<ITemporaryTableConfigurator, TemporaryTablesConfigurator>();
+        services.AddScoped<ITemporaryEntityConfigurator, TemporaryEntitiesConfigurator>();
         services.AddScoped<ITemporaryRelationalModelCreator, TemporaryRelationalModelCreator>();
         services.Decorate<IModelCustomizer, TemporaryModelCustomizer>();
-        services.AddScoped<ICreateTemporaryTableOperation, TCreateOperation>();
-        services.AddScoped<IDropTemporaryTableOperation, TDropOperation>();
-        services.AddScoped<ICreateTemporaryTableFromQueryableOperation, TCreateFromQueryableOperation>();
+        services.AddScoped<ICreateTemporaryEntityOperation, TCreateOperation>();
+        services.AddScoped<IDropTemporaryEntityOperation, TDropOperation>();
+        services.AddScoped<ICreateTemporaryEntityFromQueryableOperation, TCreateFromQueryableOperation>();
     }
 
     public void Validate(IDbContextOptions options)

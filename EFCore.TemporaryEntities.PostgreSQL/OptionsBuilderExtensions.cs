@@ -16,10 +16,10 @@ public static class OptionsBuilderExtensions
         var dbContextOptionsBuilderInfrastructure = optionsBuilder as 
             IDbContextOptionsBuilderInfrastructure;
         
-        var extension = optionsBuilder.Options.FindExtension<TemporaryTableOptionsExtension<CreateTemporaryTable, DropTemporaryTable, CreateTemporaryTableFromQueryable>>();
+        var extension = optionsBuilder.Options.FindExtension<TemporaryEntityOptionsExtension<CreateTemporaryEntity, DropTemporaryEntity, CreateTemporaryEntityFromQueryable>>();
         if (!ReferenceEquals(extension, default)) return relationalOptionsBuilder;
         
-        dbContextOptionsBuilderInfrastructure.AddOrUpdateExtension(new TemporaryTableOptionsExtension<CreateTemporaryTable, DropTemporaryTable, CreateTemporaryTableFromQueryable>());
+        dbContextOptionsBuilderInfrastructure.AddOrUpdateExtension(new TemporaryEntityOptionsExtension<CreateTemporaryEntity, DropTemporaryEntity, CreateTemporaryEntityFromQueryable>());
 
         return relationalOptionsBuilder;
     }

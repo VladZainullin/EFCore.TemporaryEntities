@@ -8,10 +8,10 @@ namespace EFCore.TemporaryTables;
 
 internal sealed class TemporaryModelBuilder : ModelBuilder
 {
-    private readonly ITemporaryTableConfigurator _configurator;
+    private readonly ITemporaryEntityConfigurator _configurator;
     private readonly ModelBuilder _modelBuilder;
 
-    public TemporaryModelBuilder(ModelBuilder modelBuilder, ITemporaryTableConfigurator configurator)
+    public TemporaryModelBuilder(ModelBuilder modelBuilder, ITemporaryEntityConfigurator configurator)
     {
         _modelBuilder = modelBuilder;
         _configurator = configurator;

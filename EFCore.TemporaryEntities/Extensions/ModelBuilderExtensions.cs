@@ -14,7 +14,7 @@ public static class ModelBuilderExtensions
     {
         var entityTypeBuilder = modelBuilder.Entity<TEntity>();
 
-        var temporaryTableConfiguration = infrastructure.GetService<ITemporaryTableConfigurator>();
+        var temporaryTableConfiguration = infrastructure.GetService<ITemporaryEntityConfigurator>();
         temporaryTableConfiguration.Add<TEntity>(configure);
 
         configure(entityTypeBuilder);

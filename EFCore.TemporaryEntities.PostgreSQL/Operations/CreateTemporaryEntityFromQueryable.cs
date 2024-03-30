@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EFCore.TemporaryTables.PostgreSQL.Operations;
 
-internal sealed class CreateTemporaryTableFromQueryable : ICreateTemporaryTableFromQueryableOperation
+internal sealed class CreateTemporaryEntityFromQueryable : ICreateTemporaryEntityFromQueryableOperation
 {
     private readonly ITemporaryRelationalModelCreator _temporaryRelationalModelCreator;
     private readonly IMigrationsModelDiffer _migrationsModelDiffer;
     private readonly IMigrationsSqlGenerator _migrationsSqlGenerator;
     private readonly ICurrentDbContext _currentDbContext;
 
-    public CreateTemporaryTableFromQueryable(
+    public CreateTemporaryEntityFromQueryable(
         ITemporaryRelationalModelCreator temporaryRelationalModelCreator,
         IMigrationsModelDiffer migrationsModelDiffer,
         IMigrationsSqlGenerator migrationsSqlGenerator,

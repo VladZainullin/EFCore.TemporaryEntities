@@ -6,15 +6,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EFCore.TemporaryTables.PostgreSQL.Operations;
 
-internal sealed class CreateTemporaryTable : 
-    ICreateTemporaryTableOperation
+internal sealed class DropTemporaryEntity : IDropTemporaryEntityOperation
 {
     private readonly ITemporaryRelationalModelCreator _temporaryRelationalModelCreator;
     private readonly IMigrationsModelDiffer _migrationsModelDiffer;
     private readonly IMigrationsSqlGenerator _migrationsSqlGenerator;
     private readonly ICurrentDbContext _currentDbContext;
 
-    public CreateTemporaryTable(
+    public DropTemporaryEntity(
         ITemporaryRelationalModelCreator temporaryRelationalModelCreator,
         IMigrationsModelDiffer migrationsModelDiffer,
         IMigrationsSqlGenerator migrationsSqlGenerator,
@@ -25,16 +24,14 @@ internal sealed class CreateTemporaryTable :
         _migrationsSqlGenerator = migrationsSqlGenerator;
         _currentDbContext = currentDbContext;
     }
-
-    public Task ExecuteAsync<TEntity>(CancellationToken cancellationToken = default) 
-        where TEntity : class
+    
+    public Task ExecuteAsync<TEntity>(CancellationToken cancellationToken = default) where TEntity : class
     {
         var relationalFinalizeModel = _temporaryRelationalModelCreator.Create<TEntity>();
         
         var migrationOperations = _migrationsModelDiffer.GetDifferences(
-            default,
-            relationalFinalizeModel);
-        
+            relationalFinalizeModel,
+            default);
         var migrationCommands = _migrationsSqlGenerator.Generate(migrationOperations);
 
         var stringBuilder = new StringBuilder();
@@ -43,8 +40,6 @@ internal sealed class CreateTemporaryTable :
         {
             stringBuilder.Append(migrationCommand.CommandText);
         }
-        
-        stringBuilder.Replace("CREATE TABLE", "CREATE TEMPORARY TABLE IF NOT EXISTS");
 
         return _currentDbContext.Context.Database.ExecuteSqlRawAsync(stringBuilder.ToString(), cancellationToken);
     }

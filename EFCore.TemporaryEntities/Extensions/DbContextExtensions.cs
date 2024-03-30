@@ -11,7 +11,7 @@ public static class DbContextExtensions
         CancellationToken cancellationToken = default)
         where TEntity : class
     {
-        await context.GetService<ICreateTemporaryTableOperation>().ExecuteAsync<TEntity>(cancellationToken);
+        await context.GetService<ICreateTemporaryEntityOperation>().ExecuteAsync<TEntity>(cancellationToken);
 
         return context.Set<TEntity>();
     }
@@ -23,7 +23,7 @@ public static class DbContextExtensions
         where TEntity : class
     {
         await context
-            .GetService<ICreateTemporaryTableFromQueryableOperation>()
+            .GetService<ICreateTemporaryEntityFromQueryableOperation>()
             .ExecuteAsync(queryable, cancellationToken);
 
         return context.Set<TEntity>();
@@ -40,7 +40,7 @@ public static class DbContextExtensions
         var queryable = getQueryable(context);
         
         await context
-            .GetService<ICreateTemporaryTableFromQueryableOperation>()
+            .GetService<ICreateTemporaryEntityFromQueryableOperation>()
             .ExecuteAsync(queryable, cancellationToken);
 
         return context.Set<TEntity>();
@@ -52,7 +52,7 @@ public static class DbContextExtensions
         where TEntity : class
     {
         return context
-            .GetService<IDropTemporaryTableOperation>()
+            .GetService<IDropTemporaryEntityOperation>()
             .ExecuteAsync<TEntity>(cancellationToken);
     }
 }

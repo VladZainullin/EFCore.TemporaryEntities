@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EFCore.TemporaryTables.Abstractions;
 
-public interface ITemporaryTableConfigurator
+public interface ITemporaryEntityConfigurator
 {
     public void Add<TEntity>(MulticastDelegate configure) where TEntity : class;
     
