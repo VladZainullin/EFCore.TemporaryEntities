@@ -52,17 +52,17 @@ public static class Program
         {
             for (var i = 0; i < 2; i++)
             {
-                var temporaryTable = await context.CreateTemporaryTableAsync<People>();
+                var peopleTemporaryTable = await context.CreateTemporaryTableAsync<People>();
 
-                temporaryTable.Add(People);
+                peopleTemporaryTable.Add(People);
 
                 await context.SaveChangesAsync();
 
-                var peoples = await temporaryTable
+                var peoples = await peopleTemporaryTable
                     .AsNoTracking()
                     .ToListAsync();
 
-                var tt = await context.CreateTemporaryTableAsync(
+                var customerTemporaryTable = await context.CreateTemporaryTableAsync(
                     c => c.Set<People>().AsNoTracking().Select(p => new Customer
                     {
                         Id = p.Id,
@@ -72,7 +72,7 @@ public static class Program
                         Address = p.Address
                     }));
 
-                var customers = await tt.AsNoTracking().ToListAsync();
+                var customers = await customerTemporaryTable.AsNoTracking().ToListAsync();
 
                 await context.DropTemporaryTableAsync<People>();
                 await context.DropTemporaryTableAsync<Customer>();
