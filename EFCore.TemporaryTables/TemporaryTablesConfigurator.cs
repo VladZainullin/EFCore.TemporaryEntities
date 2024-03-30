@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace EFCore.TemporaryTables;
 
 internal sealed class TemporaryTablesConfigurator : 
-    IAddTemporaryTableConfiguration, 
-    IConfigureTemporaryTable
+    ITemporaryTableConfigurator
 {
     private readonly IDictionary<Type, MulticastDelegate> _configurations = 
         new Dictionary<Type, MulticastDelegate>();

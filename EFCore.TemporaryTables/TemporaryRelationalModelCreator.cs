@@ -9,12 +9,12 @@ namespace EFCore.TemporaryTables;
 internal sealed class TemporaryRelationalModelCreator : ITemporaryRelationalModelCreator
 {
     private readonly IConventionSetBuilder _conventionSetBuilder;
-    private readonly IConfigureTemporaryTable _configureTemporaryTable;
+    private readonly ITemporaryTableConfigurator _configureTemporaryTable;
     private readonly IModelRuntimeInitializer _modelRuntimeInitializer;
 
     public TemporaryRelationalModelCreator(
         IConventionSetBuilder conventionSetBuilder,
-        IConfigureTemporaryTable configureTemporaryTable,
+        ITemporaryTableConfigurator configureTemporaryTable,
         IModelRuntimeInitializer modelRuntimeInitializer)
     {
         _conventionSetBuilder = conventionSetBuilder;

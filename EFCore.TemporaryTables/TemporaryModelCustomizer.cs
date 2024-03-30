@@ -15,7 +15,7 @@ internal class TemporaryModelCustomizer : IModelCustomizer
 
     public void Customize(ModelBuilder modelBuilder, DbContext context)
     {
-        var configurator = context.GetService<IAddTemporaryTableConfiguration>();
+        var configurator = context.GetService<ITemporaryTableConfigurator>();
 
         _modelCustomizer.Customize(new TemporaryModelBuilder(modelBuilder, configurator), context);
     }

@@ -12,9 +12,7 @@ public sealed class TemporaryTableOptionsExtension<TCreateOperation, TDropOperat
 {
     public void ApplyServices(IServiceCollection services)
     {
-        services.AddScoped<TemporaryTablesConfigurator>();
-        services.AddScoped<IAddTemporaryTableConfiguration>(s => s.GetRequiredService<TemporaryTablesConfigurator>());
-        services.AddScoped<IConfigureTemporaryTable>(s => s.GetRequiredService<TemporaryTablesConfigurator>());
+        services.AddScoped<ITemporaryTableConfigurator, TemporaryTablesConfigurator>();
         services.AddScoped<ITemporaryRelationalModelCreator, TemporaryRelationalModelCreator>();
         services.Decorate<IModelCustomizer, TemporaryModelCustomizer>();
         services.AddScoped<ICreateTemporaryTableOperation, TCreateOperation>();
