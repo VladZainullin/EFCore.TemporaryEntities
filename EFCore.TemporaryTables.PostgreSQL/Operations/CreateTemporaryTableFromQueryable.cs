@@ -1,3 +1,4 @@
+using System.Text;
 using EFCore.TemporaryTables.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -18,11 +19,13 @@ internal sealed class CreateTemporaryTableFromQueryable : ICreateTemporaryTableF
         CancellationToken cancellationToken = default) where TEntity : class
 
     {
-        var sql = "CREATE TEMPORARY TABLE IF NOT EXISTS "
-                + _currentDbContext.Context.Model.FindEntityType(typeof(TEntity))?.GetTableName()
-                + " AS ("
-                + queryable.ToQueryString()
-                + ")";
+        var sql = new StringBuilder()
+            .Append("CREATE TEMPORARY TABLE IF NOT EXISTS ")
+            .Append(_currentDbContext.Context.Model.FindEntityType(typeof(TEntity))?.GetTableName())
+            .Append("AS (")
+            .Append(queryable.ToQueryString())
+            .Append(')')
+            .ToString();
 
         return _currentDbContext.Context.Database.ExecuteSqlRawAsync(sql, cancellationToken);
     }
