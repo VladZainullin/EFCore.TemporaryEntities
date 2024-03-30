@@ -2,13 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{2B1767DC-AE5F-4D67-AA6D-6B30B820DB8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.TemporaryTables", "EFCore.TemporaryTables\EFCore.TemporaryTables.csproj", "{7635A732-984A-4374-9211-504EB60E9A11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.TemporaryEntities", "EFCore.TemporaryEntities\EFCore.TemporaryEntities.csproj", "{7635A732-984A-4374-9211-504EB60E9A11}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "providers", "providers", "{F0969AE8-BED7-448B-97BF-073CEB428449}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{74CB00F3-E255-47C0-8A6E-69F576805987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.TemporaryTables.PostgreSQL", "EFCore.TemporaryTables.PostgreSQL\EFCore.TemporaryTables.PostgreSQL.csproj", "{E66525E2-3126-454C-B79A-DFCADC4BDEF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.TemporaryEntities.PostgreSQL", "EFCore.TemporaryEntities.PostgreSQL\EFCore.TemporaryEntities.PostgreSQL.csproj", "{E66525E2-3126-454C-B79A-DFCADC4BDEF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
