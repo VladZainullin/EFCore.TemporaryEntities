@@ -15,15 +15,6 @@ public static class DbContextExtensions
 
         return context.Set<TEntity>();
     }
-
-    public static DbSet<TEntity> CreateTemporaryTable<TEntity>(
-        this DbContext context)
-        where TEntity : class
-    {
-        context.GetService<ICreateTemporaryTableOperation>().Execute<TEntity>();
-
-        return context.Set<TEntity>();
-    }
     
     public static async Task<DbSet<TEntity>> CreateTemporaryTableAsync<TEntity>(
         this DbContext context,
@@ -42,12 +33,5 @@ public static class DbContextExtensions
         where TEntity : class
     {
         return context.GetService<IDropTemporaryTableOperation>().ExecuteAsync<TEntity>(cancellationToken);
-    }
-
-    public static void DropTemporaryTable<TEntity>(
-        this DbContext context)
-        where TEntity : class
-    {
-        context.GetService<IDropTemporaryTableOperation>().Execute<TEntity>();
     }
 }

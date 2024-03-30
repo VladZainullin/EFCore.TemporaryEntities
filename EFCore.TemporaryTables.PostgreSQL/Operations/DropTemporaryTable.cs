@@ -3,7 +3,6 @@ using EFCore.TemporaryTables.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace EFCore.TemporaryTables.PostgreSQL.Operations;
 
@@ -43,21 +42,5 @@ internal sealed class DropTemporaryTable : IDropTemporaryTableOperation
         }
 
         return _currentDbContext.Context.Database.ExecuteSqlRawAsync(stringBuilder.ToString(), cancellationToken);
-    }
-
-    public void Execute<TEntity>() where TEntity : class
-    {
-        var relationalFinalizeModel = _temporaryRelationalModelCreator.Create<TEntity>();
-        
-        var migrationOperations = _migrationsModelDiffer.GetDifferences(
-            relationalFinalizeModel,
-            default);
-        var migrationCommands = _migrationsSqlGenerator.Generate(migrationOperations);
-
-        var stringBuilder = new StringBuilder();
-
-        foreach (var migrationCommand in migrationCommands) stringBuilder.Append(migrationCommand.CommandText);
-
-        _currentDbContext.Context.Database.ExecuteSqlRaw(stringBuilder.ToString());
     }
 }

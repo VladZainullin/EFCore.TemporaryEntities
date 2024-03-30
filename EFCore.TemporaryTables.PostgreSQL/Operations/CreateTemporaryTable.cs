@@ -48,23 +48,4 @@ internal sealed class CreateTemporaryTable :
 
         return _currentDbContext.Context.Database.ExecuteSqlRawAsync(stringBuilder.ToString(), cancellationToken);
     }
-
-    public void Execute<TEntity>() 
-        where TEntity : class
-    {
-        var relationalFinalizeModel = _temporaryRelationalModelCreator.Create<TEntity>();
-        
-        var migrationOperations = _migrationsModelDiffer.GetDifferences(
-            default,
-            relationalFinalizeModel);
-        var migrationCommands = _migrationsSqlGenerator.Generate(migrationOperations);
-
-        var stringBuilder = new StringBuilder();
-
-        foreach (var migrationCommand in migrationCommands) stringBuilder.Append(migrationCommand.CommandText);
-        
-        stringBuilder.Replace("CREATE TABLE", "CREATE TEMPORARY TABLE");
-
-        _currentDbContext.Context.Database.ExecuteSqlRaw(stringBuilder.ToString());
-    }
 }
