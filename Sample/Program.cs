@@ -75,6 +75,7 @@ public static class Program
                 var customers = await tt.AsNoTracking().ToListAsync();
 
                 await context.DropTemporaryTableAsync<People>();
+                await context.DropTemporaryTableAsync<Customer>();
             }
         }
         catch
