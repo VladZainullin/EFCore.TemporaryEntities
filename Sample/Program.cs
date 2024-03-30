@@ -45,7 +45,7 @@ public static class Program
     public static async Task Main()
     {
         await using var context = new AppDbContext();
-        
+
         await context.Database.BeginTransactionAsync();
 
         try
@@ -62,14 +62,15 @@ public static class Program
                     .AsNoTracking()
                     .ToListAsync();
 
-                var tt = await context.CreateTemporaryTableAsync(temporaryTable.AsNoTracking().Select(p => new Customer
-                {
-                    Id = p.Id,
-                    Identification = p.Identification,
-                    Family = p.Family,
-                    Work = p.Work,
-                    Address = p.Address
-                }));
+                var tt = await context.CreateTemporaryTableAsync(
+                    c => c.Set<People>().AsNoTracking().Select(p => new Customer
+                    {
+                        Id = p.Id,
+                        Identification = p.Identification,
+                        Family = p.Family,
+                        Work = p.Work,
+                        Address = p.Address
+                    }));
 
                 var customers = await tt.AsNoTracking().ToListAsync();
 

@@ -22,7 +22,7 @@ internal sealed class CreateTemporaryTableFromQueryable : ICreateTemporaryTableF
         var sql = new StringBuilder()
             .Append("CREATE TEMPORARY TABLE IF NOT EXISTS ")
             .Append(_currentDbContext.Context.Model.FindEntityType(typeof(TEntity))?.GetTableName())
-            .Append("AS (")
+            .Append(" AS (")
             .Append(queryable.ToQueryString())
             .Append(')')
             .ToString();
