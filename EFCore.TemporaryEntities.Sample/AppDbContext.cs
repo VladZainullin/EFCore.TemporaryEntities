@@ -1,7 +1,6 @@
 using EFCore.TemporaryEntities.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Sample;
 
 namespace EFCore.TemporaryEntities.Sample;
 

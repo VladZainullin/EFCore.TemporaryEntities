@@ -1,4 +1,4 @@
-namespace Sample;
+namespace EFCore.TemporaryEntities.Sample;
 
 public sealed class People
 {

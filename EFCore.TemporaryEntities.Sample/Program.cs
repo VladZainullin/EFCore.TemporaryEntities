@@ -1,8 +1,6 @@
-﻿using EFCore.TemporaryEntities;
-using EFCore.TemporaryEntities.Sample;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Sample;
+namespace EFCore.TemporaryEntities.Sample;
 
 public static class Program
 {
