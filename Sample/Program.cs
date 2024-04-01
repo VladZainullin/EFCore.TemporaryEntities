@@ -62,20 +62,7 @@ public static class Program
                     .AsNoTracking()
                     .ToListAsync();
 
-                var customerTemporaryTable = await context.CreateTemporaryEntityAsync(
-                    c => c.Set<People>().AsNoTracking().Select(p => new Customer
-                    {
-                        Id = p.Id,
-                        Identification = p.Identification,
-                        Family = p.Family,
-                        Work = p.Work,
-                        Address = p.Address
-                    }));
-
-                var customers = await customerTemporaryTable.AsNoTracking().ToListAsync();
-
                 await context.DropTemporaryEntityAsync<People>();
-                await context.DropTemporaryEntityAsync<Customer>();
             }
         }
         catch

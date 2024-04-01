@@ -13,19 +13,6 @@ public sealed class People
     public Address Address { get; init; } = default!;
 }
 
-public sealed class Customer
-{
-    public Guid Id { get; init; }
-
-    public Identification Identification { get; init; } = default!;
-    
-    public Family Family { get; init; } = default!;
-
-    public Work Work { get; init; } = default!;
-
-    public Address Address { get; init; } = default!;
-}
-
 public sealed class Identification
 {
     public string Name { get; init; } = default!;
