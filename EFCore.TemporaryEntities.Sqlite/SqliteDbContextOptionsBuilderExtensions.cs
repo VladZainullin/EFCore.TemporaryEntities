@@ -4,10 +4,8 @@ namespace EFCore.TemporaryEntities.Sqlite;
 
 public static class SqliteDbContextOptionsBuilderExtensions
 {
-    public static RelationalDbContextOptionsBuilder<T1, T2> UseTemporaryEntities<T1, T2>(
-        this RelationalDbContextOptionsBuilder<T1, T2> relationalOptionsBuilder) 
-        where T1 : RelationalDbContextOptionsBuilder<T1, T2>
-        where T2 : RelationalOptionsExtension, new()
+    public static SqliteDbContextOptionsBuilder UseTemporaryEntities(
+        this SqliteDbContextOptionsBuilder relationalOptionsBuilder)
     {
         var relationalDbContextOptionsBuilderInfrastructure =
             relationalOptionsBuilder as IRelationalDbContextOptionsBuilderInfrastructure;

@@ -1,4 +1,5 @@
 using System.Collections;
+using EFCore.TemporaryEntities.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -10,7 +11,10 @@ internal sealed class ProvidersData : IEnumerable<object[]>
     {
         yield return new object[]
         {
-            new SqliteDbContextOptionsBuilder(new DbContextOptionsBuilder())
+            new DbContextOptionsBuilder().UseSqlite(options =>
+            {
+                options.UseTemporaryEntities();
+            }),
         };
     }
 
