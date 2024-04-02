@@ -3,19 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace EFCore.TemporaryEntities;
 
-public class TemporaryEntityOptionsExtension() : IDbContextOptionsExtension
+public class TemporaryEntityOptionsExtension : IDbContextOptionsExtension
 {
     private DbContextOptionsExtensionInfo? _info;
-    
+
     public void ApplyServices(IServiceCollection services)
     {
-        services.AddScoped<ITemporaryEntityConfigurator, TemporaryEntityConfigurator>(sp => new TemporaryEntityConfigurator());
+        services.AddScoped<ITemporaryEntityConfigurator, TemporaryEntityConfigurator>(sp =>
+            new TemporaryEntityConfigurator());
         ApplyTemporaryTableProvider(services);
-    }
-
-    protected virtual void ApplyTemporaryTableProvider(IServiceCollection services) 
-    {
-        throw new NotSupportedException();
     }
 
     public void Validate(IDbContextOptions options)
@@ -24,7 +20,12 @@ public class TemporaryEntityOptionsExtension() : IDbContextOptionsExtension
 
     public DbContextOptionsExtensionInfo Info => _info ??= new ExtensionInfo(this);
 
-    private sealed class ExtensionInfo(IDbContextOptionsExtension extension) : 
+    protected virtual void ApplyTemporaryTableProvider(IServiceCollection services)
+    {
+        throw new NotSupportedException();
+    }
+
+    private sealed class ExtensionInfo(IDbContextOptionsExtension extension) :
         DbContextOptionsExtensionInfo(extension)
     {
         private string? _logFragment;
@@ -37,8 +38,10 @@ public class TemporaryEntityOptionsExtension() : IDbContextOptionsExtension
             return default;
         }
 
-        public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other) 
-            => other is ExtensionInfo;
+        public override bool ShouldUseSameServiceProvider(DbContextOptionsExtensionInfo other)
+        {
+            return other is ExtensionInfo;
+        }
 
         public override void PopulateDebugInfo(IDictionary<string, string> debugInfo)
         {

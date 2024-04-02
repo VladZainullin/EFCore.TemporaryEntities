@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\EFCore.TemporaryEntities\EFCore.TemporaryEntities.csproj" />
+        <ProjectReference Include="..\EFCore.TemporaryEntities\EFCore.TemporaryEntities.csproj"/>
     </ItemGroup>
 
 </Project>

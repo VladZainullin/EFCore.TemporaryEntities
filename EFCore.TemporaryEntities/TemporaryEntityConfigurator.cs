@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EFCore.TemporaryEntities;
 
-internal sealed class TemporaryEntityConfigurator : 
+internal sealed class TemporaryEntityConfigurator :
     ITemporaryEntityConfigurator
 {
-    private readonly IDictionary<Type, MulticastDelegate> _configurations = 
+    private readonly IDictionary<Type, MulticastDelegate> _configurations =
         new Dictionary<Type, MulticastDelegate>();
-    
-    public void Add<TEntity>(MulticastDelegate configure) where TEntity : class
+
+    public void Add<TEntity>(Action<EntityTypeBuilder<TEntity>> configure) where TEntity : class
     {
         if (_configurations.ContainsKey(typeof(TEntity))) return;
 

@@ -1,7 +1,6 @@
 using System.Collections;
 using EFCore.TemporaryEntities.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace EFCore.TemporaryEntities.Tests;
 
