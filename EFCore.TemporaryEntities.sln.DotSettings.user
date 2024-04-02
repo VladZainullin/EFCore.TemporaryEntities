@@ -1,0 +1,13 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e30075a7_002De7b0_002D4df0_002Da616_002D0c322c3f9fd2/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="UseTemporaryEntityOptionsExtensionTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::99E7E298-ED9C-4629-8CA2-B63FF39C3A71::net8.0::EFCore.TemporaryEntities.Tests.TemporaryEntityExtensionTests.UseTemporaryEntityOptionsExtensionTest&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::99E7E298-ED9C-4629-8CA2-B63FF39C3A71::net8.0::EFCore.TemporaryEntities.Tests.TemporaryEntityExtensionTests.CreateTemporaryEntityOptionsExtensionTest&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::99E7E298-ED9C-4629-8CA2-B63FF39C3A71::net8.0::EFCore.TemporaryEntities.Tests.TemporaryEntityConfiguratorTests.TemporaryEntityAdd&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f27beb7f_002D82bf_002D48f5_002Db0c9_002Dca8565f2f9ab/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TemporaryEntityAdd" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::99E7E298-ED9C-4629-8CA2-B63FF39C3A71::net8.0::EFCore.TemporaryEntities.Tests.TemporaryEntityConfiguratorTests.TemporaryEntityAdd&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
