@@ -9,8 +9,6 @@ public class TemporaryEntityOptionsExtension : IDbContextOptionsExtension
 
     public void ApplyServices(IServiceCollection services)
     {
-        services.AddScoped<ITemporaryEntityConfigurator, TemporaryEntityConfigurator>(sp =>
-            new TemporaryEntityConfigurator());
         ApplyTemporaryTableProvider(services);
     }
 

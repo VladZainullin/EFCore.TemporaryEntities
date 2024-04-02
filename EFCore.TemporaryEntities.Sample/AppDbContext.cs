@@ -20,7 +20,7 @@ public sealed class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.TemporaryEntity<People>(this, entityTypeBuilder =>
+        modelBuilder.TemporaryEntity<People>(entityTypeBuilder =>
         {
             entityTypeBuilder.HasKey(p => p.Id);
 

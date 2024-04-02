@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -8,7 +9,6 @@ namespace EFCore.TemporaryEntities.Sqlite;
 
 internal sealed class SqliteTemporaryEntityProvider(
     IConventionSetBuilder conventionSetBuilder,
-    ITemporaryEntityConfigurator configureTemporaryEntity,
     IModelRuntimeInitializer modelRuntimeInitializer,
     IMigrationsModelDiffer migrationsModelDiffer,
     IMigrationsSqlGenerator migrationsSqlGenerator,
@@ -17,10 +17,14 @@ internal sealed class SqliteTemporaryEntityProvider(
     public Task CreateAsync<TEntity>(CancellationToken cancellationToken)
         where TEntity : class
     {
+        var entityType = currentDbContext.Context.Model.FindEntityType(typeof(TEntity));
+        var annotation = entityType?.FindAnnotation("TemporaryEntity");
+        var configure = annotation?.Value as Action<EntityTypeBuilder<TEntity>>;
+        
         var conventionSet = conventionSetBuilder.CreateConventionSet();
         var modelBuilder = new ModelBuilder(conventionSet);
 
-        configureTemporaryEntity.Configure<TEntity>(modelBuilder);
+        configure?.Invoke(modelBuilder.Entity<TEntity>());
 
         var model = modelBuilder.Model;
 
@@ -51,7 +55,13 @@ internal sealed class SqliteTemporaryEntityProvider(
         var conventionSet = conventionSetBuilder.CreateConventionSet();
         var modelBuilder = new ModelBuilder(conventionSet);
 
-        configureTemporaryEntity.Configure<TEntity>(modelBuilder);
+        var entityType = currentDbContext.Context.Model.FindEntityType(typeof(TEntity));
+
+        var annotation = entityType?.FindAnnotation("TemporaryEntity");
+
+        var configure = annotation?.Value as Action<EntityTypeBuilder<TEntity>>;
+
+        configure?.Invoke(modelBuilder.Entity<TEntity>());
 
         var model = modelBuilder.Model;
 

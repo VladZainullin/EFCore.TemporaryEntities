@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace EFCore.TemporaryEntities.Sqlite;
@@ -13,6 +14,8 @@ public static class SqliteDbContextOptionsBuilderExtensions
         var optionsBuilder = relationalDbContextOptionsBuilderInfrastructure.OptionsBuilder;
         var dbContextOptionsBuilderInfrastructure = optionsBuilder as
             IDbContextOptionsBuilderInfrastructure;
+
+        optionsBuilder.ReplaceService<IAnnotationCodeGenerator, ExcludeTemporaryEntityAnnotationCodeGenerator>();
 
         var extension = optionsBuilder.Options.FindExtension<SqliteTemporaryEntityOptionsExtension>();
         if (!ReferenceEquals(extension, default)) return relationalOptionsBuilder;
