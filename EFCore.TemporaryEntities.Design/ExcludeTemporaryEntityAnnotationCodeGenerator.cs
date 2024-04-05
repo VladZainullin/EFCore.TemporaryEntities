@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace EFCore.TemporaryEntities;
+namespace EFCore.TemporaryEntities.Design;
 
 public sealed class ExcludeTemporaryEntityAnnotationCodeGenerator(AnnotationCodeGeneratorDependencies dependencies)
     : AnnotationCodeGenerator(dependencies)
