@@ -1,8 +1,3 @@
-using Microsoft.EntityFrameworkCore.Design;
-
-[assembly: DesignTimeServicesReference(
-    "EFCore.TemporaryEntities.Design.TemporaryEntityDesignTimeServices, EFCore.TemporaryEntities.Design")]
-
 namespace EFCore.TemporaryEntities.Sample;
 
 public sealed class People
