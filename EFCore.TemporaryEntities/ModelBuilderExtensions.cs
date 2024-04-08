@@ -11,7 +11,7 @@ public static class ModelBuilderExtensions
     {
         var entityTypeBuilder = modelBuilder.Entity<TEntity>();
 
-        entityTypeBuilder.HasAnnotation("TemporaryEntity", configure);
+        entityTypeBuilder.HasAnnotation("Relational:TemporaryEntity", configure);
 
         configure(entityTypeBuilder);
         entityTypeBuilder.Metadata.SetIsTableExcludedFromMigrations(true);

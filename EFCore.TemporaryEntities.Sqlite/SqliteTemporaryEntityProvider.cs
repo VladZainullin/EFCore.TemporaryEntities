@@ -18,7 +18,7 @@ internal sealed class SqliteTemporaryEntityProvider(
         where TEntity : class
     {
         var entityType = currentDbContext.Context.Model.FindEntityType(typeof(TEntity));
-        var annotation = entityType?.FindAnnotation("TemporaryEntity");
+        var annotation = entityType?.FindAnnotation("Relational:TemporaryEntity");
         var configure = annotation?.Value as Action<EntityTypeBuilder<TEntity>>;
         
         var conventionSet = conventionSetBuilder.CreateConventionSet();
@@ -57,7 +57,7 @@ internal sealed class SqliteTemporaryEntityProvider(
 
         var entityType = currentDbContext.Context.Model.FindEntityType(typeof(TEntity));
 
-        var annotation = entityType?.FindAnnotation("TemporaryEntity");
+        var annotation = entityType?.FindAnnotation("Relational:TemporaryEntity");
 
         var configure = annotation?.Value as Action<EntityTypeBuilder<TEntity>>;
 

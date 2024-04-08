@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EFCore.TemporaryEntities.Design;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-[assembly: DesignTimeServicesReference(
-    "EFCore.TemporaryEntities.Design.TemporaryEntityDesignTimeServices, EFCore.TemporaryEntities.Design")]
+[assembly: DesignTimeServicesReference(TemporaryEntityConstants.Reference)]
 
 namespace EFCore.TemporaryEntities.Sample;
 
